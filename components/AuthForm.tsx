@@ -1,4 +1,4 @@
-
+"use client"
 import React, { useState } from 'react';
 import {motion as m} from 'framer-motion';
 import * as z from "zod";
@@ -9,13 +9,17 @@ import { Input } from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import AuthSocialButton from './AuthSocialButton';
 import axios from 'axios';
+import { useStore } from '@/app/(zstore)/useStore';
+import { useRouter } from 'next/navigation';
 
 type Vairant="Login" | "SignUp";
 
+
 const AuthForm:React.FC = () => {
     const [variant, setVariant] = useState<Vairant>("Login")
+    const {setToken,token}=useStore()
+    const router=useRouter()
     const formSchema = z.object({
-        displayName: z.string().min(3, "Must be at least 3 characters"),
         email: z.string().email("Must be a valid email"),
         password: z.string().min(6, "Must be at least 6 characters"),
 
@@ -23,17 +27,22 @@ const AuthForm:React.FC = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            displayName: "",
             email: "",
             password: "",
         },
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
-       console.log("aaaaaaaa");
+      await axios.post("http://localhost:5000/auth/login",value).then(async(res)=>{
+        console.log('resDatA',res.data)
+        setToken(res.data)
+       router.push('/test')
+
+      })
     };
     const googleAuth=async()=>{
-        await axios.get("http://localhost:5000/auth").then((res)=>{
+          await axios.get("http://localhost:5000/auth").then(async(res)=>{
             console.log(res.data);
+           
         })
     }
     
@@ -120,6 +129,7 @@ const AuthForm:React.FC = () => {
          {variant === 'Login' ? 'Create an account' : 'Login'}
           </div>
          </div>
+      
     </m.div>
 
     )
