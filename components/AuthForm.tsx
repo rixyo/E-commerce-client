@@ -9,16 +9,16 @@ import { Input } from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import AuthSocialButton from './AuthSocialButton';
 import axios from 'axios';
-import { useStore } from '@/app/(zstore)/useStore';
 import { useRouter } from 'next/navigation';
-
-type Vairant="Login" | "SignUp";
-
+import { toast } from './ui/use-toast';
+import {redis} from "@/lib/redis"
+import { useStoreModal } from "@/hooks/use-store-model";
+type Vairant="Login" | "forgotPassword";
 
 const AuthForm:React.FC = () => {
     const [variant, setVariant] = useState<Vairant>("Login")
-    const {setToken,token}=useStore()
     const router=useRouter()
+    const storeModal=useStoreModal();
     const formSchema = z.object({
         email: z.string().email("Must be a valid email"),
         password: z.string().min(6, "Must be at least 6 characters"),
@@ -33,10 +33,25 @@ const AuthForm:React.FC = () => {
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
       await axios.post("http://localhost:5000/auth/login",value).then(async(res)=>{
-        console.log('resDatA',res.data)
-        setToken(res.data)
-       router.push('/test')
+        toast({
+            title: "Login Success",
+            description: "You have been logged in successfully",
+        })
+       const token = await redis.get('token')
+       if(!token){
+        await redis.set('token',res.data,{
+            ex:60*60*24*30/30
+        })
+       }
+       router.push("/")
+      
 
+      }).catch(()=>{
+        toast({
+            variant:"destructive",
+            title: "Error",
+            description: "Something went wrong",
+        })
       })
     };
     const googleAuth=async()=>{
@@ -55,7 +70,7 @@ const AuthForm:React.FC = () => {
         transition={{duration:0.75}}
     >
         <m.h1 
-         className="text-2xl font-semibold text-center mb-6">{variant==="SignUp"?"Create an Account":"Login to Account"}</m.h1>
+         className="text-2xl font-semibold text-center mb-6">{variant==="forgotPassword"?"Forget Password":"Login to Account"}</m.h1>
        <AuthSocialButton onClick={googleAuth} />
        <div className="relative flex justify-center text-sm mt-2">
               <span className="bg-white px-2 text-gray-500">
@@ -78,21 +93,23 @@ const AuthForm:React.FC = () => {
               </FormItem>
             )}
             />
-        
-             <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-               <FormLabel>Password</FormLabel>
-               <FormControl>
-                <Input type="password" placeholder='Password' {...field} />
-               </FormControl>
-               <FormMessage>{form.formState.errors?.password?.message}</FormMessage>
+        {variant==="Login" &&(
+          <FormField
+         control={form.control}
+         name="password"
+         render={({ field }) => (
+           <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+             <Input type="password" placeholder='Password' {...field} />
+            </FormControl>
+            <FormMessage>{form.formState.errors?.password?.message}</FormMessage>
 
-              </FormItem>
-            )}
-            />
+           </FormItem>
+         )}
+         />
+
+        )}
             <div className='flex items-center justify-end pt-6 space-x-2'>
                 <Button type='submit'>
                     Continue
@@ -119,14 +136,14 @@ const AuthForm:React.FC = () => {
           </div>
          <div className='flex items-center justify-center pt-6 space-x-2'>
          <div>
-          {variant === 'Login' ? 'Donot have account?' : 'Already have an account?'} 
+          {variant === 'Login' ? 'Forget Password?' : 'Already have an account?'} 
           </div>
          <div 
-         onClick={() => setVariant(variant === 'Login' ? 'SignUp' : 'Login')}
+         onClick={() => setVariant(variant === 'forgotPassword' ? 'Login' : 'forgotPassword')}
            
             className="underline cursor-pointer"
           >
-         {variant === 'Login' ? 'Create an account' : 'Login'}
+         {variant === 'Login' ? 'Rest Password' : 'Login'}
           </div>
          </div>
       

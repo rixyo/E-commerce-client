@@ -1,19 +1,12 @@
 "use client"
 import AuthForm from '@/components/AuthForm';
 import React from 'react';
-import Image from 'next/image';
 
-type pageProps = {
-    
-};
-
-const page:React.FC<pageProps> = () => {
+const page:React.FC = () => {
     
     return (
         <div className="flex items-center justify-center h-full bg-[url('/signin-bg.svg')]">
-           
-           
-            <AuthForm/>
+        <AuthForm/>
         </div>
     )
 }

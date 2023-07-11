@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { useStore } from '@/app/(zstore)/useStore';
+import {redis} from './redis';
 const fetcher = async (url: string) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const {token}=useStore();
+const token = await redis.get('token');
     try {
     if(!token) return Promise.reject('unauthorized');
   

@@ -1,27 +1,26 @@
-import { ClerkProvider } from '@clerk/nextjs'
-import { Metadata } from 'next/types'
+"use client"
 import './globals.css'
-
+import { Toaster } from "@/components/ui/toaster"
 import ModalProvider from '@/providers/modal-provider'
-
-export const metadata: Metadata = {
-  title: 'Admin Dashboard',
-  description: 'Admin Dashboard',
-}
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const queryClient = new QueryClient()
   return (
-    <ClerkProvider>
+  
     <html lang="en">
+      
       <body>
+      <QueryClientProvider client={queryClient}>
         <ModalProvider/>
         {children}
+        <Toaster/>
+        </QueryClientProvider>
         </body>
     </html>
-    </ClerkProvider>
 
   )
 }
