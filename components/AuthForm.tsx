@@ -12,13 +12,11 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from './ui/use-toast';
 import {redis} from "@/lib/redis"
-import { useStoreModal } from "@/hooks/use-store-model";
 type Vairant="Login" | "forgotPassword";
 
 const AuthForm:React.FC = () => {
     const [variant, setVariant] = useState<Vairant>("Login")
     const router=useRouter()
-    const storeModal=useStoreModal();
     const formSchema = z.object({
         email: z.string().email("Must be a valid email"),
         password: z.string().min(6, "Must be at least 6 characters"),
@@ -32,7 +30,7 @@ const AuthForm:React.FC = () => {
         },
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
-      await axios.post("http://localhost:5000/auth/login",value).then(async(res)=>{
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/login`,value).then(async(res)=>{
         toast({
             title: "Login Success",
             description: "You have been logged in successfully",
@@ -55,10 +53,7 @@ const AuthForm:React.FC = () => {
       })
     };
     const googleAuth=async()=>{
-          await axios.get("http://localhost:5000/auth").then(async(res)=>{
-            console.log(res.data);
-           
-        })
+         
     }
     
     

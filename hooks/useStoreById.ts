@@ -11,14 +11,14 @@ const useStore = (id:string) => {
         queryKey:['store',id],
         queryFn:async()=> {
             const token= await redis.get('token')
-            const {data} = await axios.get(`http://localhost:5000/store/${id}`,{
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/store/${id}`,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
             })
-            if(data){
-                return data
-            }
+            
+                return data as Store
+            
         }
     })
   return {

@@ -6,19 +6,19 @@ interface Store {
     name: string;
     userId: string;
 }
-const useFirstStore = () => {
+
+const useAllStore = () => {
     const {data,isLoading,isError}=useQuery({
-        queryKey:['firststore'],
+        queryKey:['Allstore'],
         queryFn:async()=> {
             const token= await redis.get('token')
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/store`,{
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/store/all`,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
             })
-            return data as Store
-        }
-       
+            return data as Store[]
+        },
     })
     return {
         data,
@@ -26,4 +26,4 @@ const useFirstStore = () => {
         isError,
     }
 };
-export default useFirstStore;
+export default useAllStore;

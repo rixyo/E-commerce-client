@@ -2,16 +2,17 @@
 import React from 'react';
 import { useStoreModal } from '@/hooks/use-store-model';
 import * as z from "zod";
-import Modal from '@/components/ui/modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import {redis} from "@/lib/redis"
+
+import Modal from '@/components/ui/modal';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
-import axios from 'axios';
 import { toast } from '../ui/use-toast';
-import {redis} from "@/lib/redis"
-import { useRouter } from 'next/navigation';
+
 
 const formSchema = z.object({
     name: z.string().min(3, "Must be at least 3 characters"),
@@ -19,7 +20,6 @@ const formSchema = z.object({
 
 const StoreModal:React.FC=() => {
     const StoreModal=useStoreModal();
-    const router=useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -29,7 +29,7 @@ const StoreModal:React.FC=() => {
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
         const token = await redis.get('token')
-        await axios.post("http://localhost:5000/store",value,{
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/store`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`

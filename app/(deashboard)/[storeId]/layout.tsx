@@ -1,5 +1,4 @@
 "use client"
-
 import Navbar from "@/components/Navbar"
 import useCurrentUser from "@/hooks/useCurrentUser"
 import useStore from "@/hooks/useStoreById"
@@ -12,6 +11,9 @@ export default  function DashBoardLayout({
   children: React.ReactNode
     params: {storeId:string}
 }) {
+  if(!params.storeId || params.storeId==='undefined'){
+    redirect('/')
+  }
   const {data:user,isLoading}=useCurrentUser()
   const {data:store,isLoading:storeLoading}=useStore(params.storeId)
   if(!user && !isLoading){
@@ -19,14 +21,12 @@ export default  function DashBoardLayout({
   }
  else if(!store && storeLoading){
     return <div
-    className="flex justify-center items-center h-screen"
+    className="flex justify-center items-center h-screen text-xl font-bold"
     >Loading.......</div>
   }
   else if(!store && !storeLoading){
     redirect('/')
   }
- 
- 
   return (
    <>
     <Navbar/>
