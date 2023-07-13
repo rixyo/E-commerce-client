@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import {redis} from "@/lib/redis"
+import { useRouter } from 'next/navigation';
 
 import Modal from '@/components/ui/modal';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -20,6 +21,7 @@ const formSchema = z.object({
 
 const StoreModal:React.FC=() => {
     const StoreModal=useStoreModal();
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,7 +41,8 @@ const StoreModal:React.FC=() => {
                 title: "Store Created",
                 description: "Your store has been created successfully",
               })
-                window.location.assign(`/${res.data.id}`);
+              StoreModal.onClose()
+              router.push(`/${res.data.id}`)
         }).catch(()=>{
             toast({
                 variant:"destructive",

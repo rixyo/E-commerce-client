@@ -4,6 +4,7 @@ import useCurrentUser from "@/hooks/useCurrentUser"
 import useStore from "@/hooks/useStoreById"
 import { redirect } from "next/navigation"
 
+
 export default  function DashBoardLayout({
   children,
   params,
@@ -11,18 +12,18 @@ export default  function DashBoardLayout({
   children: React.ReactNode
     params: {storeId:string}
 }) {
-  if(!params.storeId || params.storeId==='undefined'){
+  const {data:store,isLoading:storeLoading}=useStore(params.storeId)
+  const {data:user,isLoading}=useCurrentUser()
+   if(!user && !isLoading){
+     redirect('/auth')
+   }
+  else if(!params.storeId || params.storeId==='undefined'){
     redirect('/')
   }
-  const {data:user,isLoading}=useCurrentUser()
-  const {data:store,isLoading:storeLoading}=useStore(params.storeId)
-  if(!user && !isLoading){
-    redirect('/auth')
-  }
  else if(!store && storeLoading){
-    return <div
-    className="flex justify-center items-center h-screen text-xl font-bold"
-    >Loading.......</div>
+    return (
+      <div className="flex justify-center items-center h-screen text-xl font-bold">Loading.......</div>
+    )
   }
   else if(!store && !storeLoading){
     redirect('/')

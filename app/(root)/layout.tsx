@@ -7,19 +7,17 @@ export default  function SetupLayout({
 }:{
     children:React.ReactNode
 }){
-    const {data:user,isLoading}=useCurrentUser()
     const {data:store,isLoading:storeLoading}=useFirstStore()
-  if(store===undefined && !storeLoading){
-        redirect('/')
+    const {data:user,isLoading}=useCurrentUser()
+    if(!user && !isLoading){
+         redirect('/auth')
+     }
+ else  if(store===undefined && !storeLoading){
+        redirect('/');
     }
-   else if(!user && !isLoading){
-        redirect('/auth')
-    }
-        else if(store && !storeLoading && store.userId===user?.id){
+        else if(store && !storeLoading){
         redirect(`/${store.id}`)
         }
-
-  
      return(
             <>
             {children}

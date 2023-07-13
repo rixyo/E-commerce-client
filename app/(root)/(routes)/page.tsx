@@ -1,8 +1,8 @@
 "use client";
-import AuthForm from "@/components/AuthForm";
 import { useStoreModal } from "@/hooks/use-store-model";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useFirstStore from "@/hooks/useFirstStore";
+
 import { redirect } from "next/navigation";
 import React,{useEffect} from "react";
 export default function SetupPage() {
@@ -11,14 +11,15 @@ export default function SetupPage() {
   const {data:user,isLoading}=useCurrentUser()
   const {data:store,isLoading:storeLoading}=useFirstStore()
 
+
   useEffect(() => {
-    if(!isOpen && user && !isLoading && user.userRole==='ADMIN' && !store && !storeLoading){
+      if(!user && !isLoading){
+          redirect('/auth')
+     }
+    else if(!isOpen && user && !isLoading && !store && !storeLoading){
      onOpen()
     }
 
-   else  if(!user && !isLoading){
-      redirect('/auth')
-    }
     
   }, [isOpen,onOpen,user,isLoading,store,storeLoading]);
   return null;

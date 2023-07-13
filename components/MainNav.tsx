@@ -18,6 +18,12 @@ export  function MainNav({
 
         },
         {
+            href:`/${params.storeId}/billboards`,
+            label:'Billboards',
+            isActive:pathname.includes('billboards')
+
+        },
+        {
             href:`/${params.storeId}/settings`,
             label:'Settings',
             isActive:pathname.includes('settings')

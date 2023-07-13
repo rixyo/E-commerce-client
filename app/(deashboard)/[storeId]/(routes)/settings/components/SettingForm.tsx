@@ -5,15 +5,14 @@ import React, { useState } from 'react';
 import { Separator } from "@/components/ui/separator"
 import { Trash } from 'lucide-react';
 import * as z from 'zod';
-import { set, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import { redis } from '@/lib/redis';
 import { toast } from '@/components/ui/use-toast';
-import { redirect, useParams, useRouter } from 'next/navigation';
-import { on } from 'events';
+import {  useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
 import { ApiAlert } from '@/components/ui/api-alert';
 
@@ -23,7 +22,7 @@ type Store = {
     userId:string;
 }
 type SettingFormProps = {
-    store:Store;
+    store:Store | undefined;
     
 };
 const formSchema=z.object({
@@ -34,24 +33,23 @@ const formSchema=z.object({
 const SettingForm:React.FC<SettingFormProps> = ({store}) => {
     const [open,setOpen] = useState<boolean>(false)
     const [loading,setLoading] = useState<boolean>(false)
-    const params = useParams();
     const router = useRouter();
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
-        defaultValues:{
-            name:store.name
+        defaultValues:store||{
+            name:''
         }
     })
     const onSubmit=async(value:z.infer<typeof formSchema>)=>{
-        if(value.name===store.name) return;
+        if(value.name===store?.name) return;
         setLoading(true)
         const token= await redis.get('token')
-        await axios.patch(`http://localhost:5000/store/${store.id}`,value,{
+        await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/store/${store?.id}`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
             },
-        }).then(()=>{
+        }).then((res)=>{
             setLoading(false)
             
             
@@ -59,9 +57,7 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
                 title:'Store name updated',
                 description:'Your store name has been updated successfully'
             })
-            window.location.reload()
-           
-            
+            router.push(`/${res.data.id}`)
         }).catch((error)=>{
             setLoading(false)
             console.log(error)
@@ -77,7 +73,7 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
     const deleteStore=async()=>{
         setLoading(true)
         const token= await redis.get('token')
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/store/${store.id}`,{
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/store/${store?.id}`,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -149,9 +145,8 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
       
       <ApiAlert
         title="API Endpoint"
-        description={`${process.env.NEXT_PUBLIC_API_URL}/store/${store.id}`}
+        description={`${process.env.NEXT_PUBLIC_API_URL}/store/${store?.id}`}
         variant='admin'
-        method='GET'
       />
       
         </>

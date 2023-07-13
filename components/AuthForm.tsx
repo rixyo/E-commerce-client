@@ -30,7 +30,7 @@ const AuthForm:React.FC = () => {
         },
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/login`,value).then(async(res)=>{
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`,value).then(async(res)=>{
         toast({
             title: "Login Success",
             description: "You have been logged in successfully",
@@ -38,13 +38,14 @@ const AuthForm:React.FC = () => {
        const token = await redis.get('token')
        if(!token){
         await redis.set('token',res.data,{
-            ex:60*60*24*30/30
+            ex:60*60*24*1
         })
        }
        router.push("/")
       
 
-      }).catch(()=>{
+      }).catch((error)=>{
+        console.log(error)
         toast({
             variant:"destructive",
             title: "Error",
@@ -88,7 +89,6 @@ const AuthForm:React.FC = () => {
               </FormItem>
             )}
             />
-        {variant==="Login" &&(
           <FormField
          control={form.control}
          name="password"
@@ -104,7 +104,7 @@ const AuthForm:React.FC = () => {
          )}
          />
 
-        )}
+        
             <div className='flex items-center justify-end pt-6 space-x-2'>
                 <Button type='submit'>
                     Continue

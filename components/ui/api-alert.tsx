@@ -7,7 +7,6 @@ import { toast } from "./use-toast";
 
 interface ApiAlertProps {
   title: string;
-  method: string;
   description: string;
   variant: 'public' | 'admin',
 };
@@ -26,7 +25,6 @@ const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
 export const ApiAlert: React.FC<ApiAlertProps> = ({
   title,
   description,
-  method,
   variant = "public"
 }) => {
   const onCopy = (description: string) => {
@@ -48,9 +46,6 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
         </Badge>
       </AlertTitle>
       <AlertDescription className="mt-4 flex items-center gap-5">
-      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-          {method}
-        </code>
         <code className="text-ellipsis overflow-hidden relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm  font-semibold">
           {description}
         </code>
