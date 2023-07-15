@@ -24,6 +24,12 @@ export  function MainNav({
 
         },
         {
+            href:`/${params.storeId}/categories`,
+            label:'Categories',
+            isActive:pathname.includes('categories')
+
+        },
+        {
             href:`/${params.storeId}/settings`,
             label:'Settings',
             isActive:pathname.includes('settings')

@@ -9,7 +9,7 @@ import React from 'react';
 
 import { PlusIcon } from 'lucide-react';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-export  function BillBoardClient({data}:{
+export  function CategoryClient({data}:{
   data:BillboardColumn[]
 })  {
     const router = useRouter()
@@ -22,7 +22,7 @@ export  function BillBoardClient({data}:{
         description='BillBoard is a place where you can advertise your products'
          />  
         <Button  onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
-          <PlusIcon className="mr-2 h-4 w-4" /> Add
+          <PlusIcon className="mr-2 h-4 w-4" /> Add New
         </Button>
         </div>
         <Separator className='my-4'/>

@@ -9,7 +9,7 @@ interface Billboard {
 }
 const useBillBoardById = (id:string) => {
     const {data,isLoading,isError}=useQuery({
-        queryKey:['store',id],
+        queryKey:['BillboardById',id],
         queryFn:async()=> {
             const token= await redis.get('token')
             const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${id}`,{

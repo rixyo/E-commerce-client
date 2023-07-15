@@ -49,9 +49,8 @@ export const CellAction: React.FC<CellActionProps> = ({
         setOpen(false)
         router.refresh()
         router.push(`/${params.storeId}/billboards`)
-    }).catch((error)=>{
+    }).catch(()=>{
         setLoading(false)
-        console.log(error)
         setOpen(false)
         toast({
             variant:'destructive',

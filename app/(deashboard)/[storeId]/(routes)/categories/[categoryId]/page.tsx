@@ -1,11 +1,11 @@
 "use client";
-import React, { Suspense } from 'react';
-import BillboardForm from './components/BillBoardForm';
+import React from 'react';
+import CategoryForm from './components/CategoryForm';
 import useBillBoardById from '@/hooks/useBillBoardById';
 import { usePathname } from 'next/navigation';
 
 
-const BillBoardPage = ({params}:{
+const CategoryPage = ({params}:{
     params:{
         billboardId:string
         storeId:string
@@ -16,11 +16,11 @@ const BillBoardPage = ({params}:{
     return (
         <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
-       {pathname.includes('new') && <BillboardForm initialData={undefined} />  }  
+       {pathname.includes('new') && <CategoryForm initialData={undefined} />  }  
      
-       {billboard &&!isLoading && <BillboardForm initialData={billboard} />}
+       {billboard &&!isLoading && <CategoryForm initialData={billboard} />}
         </div>
       </div>
     )
 }
-export default BillBoardPage;
+export default CategoryPage;

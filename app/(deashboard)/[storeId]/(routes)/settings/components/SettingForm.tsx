@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import { redis } from '@/lib/redis';
 import { toast } from '@/components/ui/use-toast';
-import {  useParams, useRouter } from 'next/navigation';
+import {  useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
 import { ApiAlert } from '@/components/ui/api-alert';
 
@@ -36,9 +36,7 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
     const router = useRouter();
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
-        defaultValues:store||{
-            name:''
-        }
+        defaultValues:store
     })
     const onSubmit=async(value:z.infer<typeof formSchema>)=>{
         if(value.name===store?.name) return;
