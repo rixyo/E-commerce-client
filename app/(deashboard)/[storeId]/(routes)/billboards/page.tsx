@@ -13,7 +13,7 @@ type pageProps = {
 };
 const BillBoards:React.FC<pageProps> = ({params}) => {
     const {data:billboards}=useGetAllBillboards(params.storeId)
-    if(!billboards) return <div className='flex justify-center items-center'>Billboard data is loading....</div>
+    if(!billboards) return <div className='flex justify-center items-center h-full'>Billboard data is loading....</div>
     const formattedBillboards: BillboardColumn[] = billboards.map((item) => ({
         id: item.id,
         label: item.label,

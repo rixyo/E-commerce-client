@@ -7,28 +7,27 @@ import { redis } from '@/lib/redis';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
+import {  useParams, useRouter } from 'next/navigation';
+import useGetAllBillboards from '@/hooks/useGetAllBillboards';
 
 import { Heading } from '@/components/ui/heading';
 import { Separator } from "@/components/ui/separator"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import {  useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
-import ImageUpload from '@/components/ui/image-upload';
+import { Category } from '@/hooks/useGetAllCategories';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-type BillBoard = {
-    id:string;
-    label:string;
-    imageUrl:string;
-}
+
+
 type FormProps = {
-    initialData:BillBoard | undefined;
+    initialData:Category | undefined;
     
 };
 const formSchema=z.object({
-    label:z.string().min(3,"Must be at least 3 characters"),
-    imageUrl:z.string().url("Must be a valid url")
+    name:z.string().min(3,"Must be at least 3 characters"),
+    billboardId:z.string().min(3,"Must be at least 3 characters"),
 })
 
 
@@ -37,23 +36,26 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter();
     const params = useParams();
-    const title = initialData ? 'Edit billboard' : 'Create billboard';
-    const description = initialData ? 'Edit a billboard.' : 'Add a new billboard';
-    const toastMessage = initialData ? 'Billboard updated.' : 'Billboard created.';
+    const {data:billboards} = useGetAllBillboards(params.storeId)
+    const title = initialData ? 'Edit category' : 'Create category';
+    const description = initialData ? 'Edit a category.' : 'Add a new category';
+    const toastMessage = initialData ? 'Category updated.' : 'Category created.';
     const action = initialData ? 'Save changes' : 'Create';
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:initialData || {
-            label: '',
-            imageUrl: '',
+          name: '',
+          billboardId: '',
+
+          
         }    
     })
     const onSubmit=async(value:z.infer<typeof formSchema>)=>{
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          if(value.imageUrl===initialData.imageUrl && value.label===initialData.label) return;
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${params.storeId}/update/${initialData.id}`,value,{
+          if(value.name===initialData.name) return;
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/update/${initialData.id}`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -65,11 +67,11 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                 description:toastMessage
             })
             router.refresh()
-            router.push(`/${params.storeId}/billboards/${initialData.id}`)
+            router.push(`/${params.storeId}/categories/${initialData.id}`)
           })
         }else{
 
-          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${params.storeId}/create`,value,{
+          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/create`,value,{
               headers:{
                   "Content-Type":"application/json",
                   Authorization:`Bearer ${token}`
@@ -81,11 +83,10 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                   description:toastMessage
               })
               router.refresh()
-              router.push(`/${params.storeId}/billboards`)
+              router.push(`/${params.storeId}/categories`)
              
               
           }).catch((error)=>{
-              setLoading(false)
               console.log(error)
               toast({
                   variant:'destructive',
@@ -111,7 +112,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                 title:'Billboard deleted',
                 description:'Your billboard has been deleted successfully'
             })
-            router.push(`/${params.storeId}/billboards`)
+            router.push(`/${params.storeId}/categories`)
         }).catch((error)=>{
             setLoading(false)
             console.log(error)
@@ -150,34 +151,38 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         <Separator/>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-          <FormField
+          <div className="md:grid md:grid-cols-3 gap-8">
+            <FormField
               control={form.control}
-              name="imageUrl"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Background image</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <ImageUpload 
-                      value={field.value ? [field.value] : []} 
-                      disabled={loading} 
-                      onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange('')}
-                    />
+                    <Input disabled={loading} placeholder="Category Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          <div className="md:grid md:grid-cols-3 gap-8">
-            <FormField
+                  <FormField
               control={form.control}
-              name="label"
+              name="billboardId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Label</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Billboard label" {...field} />
-                  </FormControl>
+                  <FormLabel>Billboard</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a billboard" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {billboards?.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>{billboard.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

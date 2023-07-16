@@ -48,7 +48,6 @@ export const CellAction: React.FC<CellActionProps> = ({
         })
         setOpen(false)
         router.refresh()
-        router.push(`/${params.storeId}/billboards`)
     }).catch((error)=>{
         setLoading(false)
         console.log(error)

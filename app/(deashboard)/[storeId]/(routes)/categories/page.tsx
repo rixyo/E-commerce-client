@@ -1,7 +1,8 @@
 "use client"
 import React from 'react';
 import {CategoryClient} from './components/CategoryClient';
-import useGetAllBillboards from '@/hooks/useGetAllBillboards';
+import useGetAllCategories from '@/hooks/useGetAllCategories';
+import { CategoryColumn } from './components/columns';
 
 
 type pageProps = {
@@ -9,14 +10,21 @@ type pageProps = {
         storeId:string
     }
 };
-const BillBoards:React.FC<pageProps> = ({params}) => {
-    const {data:billboards}=useGetAllBillboards(params.storeId)
+const Categories:React.FC<pageProps> = ({params}) => {
+    const {data:category,isLoading}=useGetAllCategories(params.storeId)
+    if(!category) return <div className='flex justify-center items-center h-full'>Category data is loading....</div>
+    const formattedCategories:CategoryColumn[] = category.map((item) => ({
+        id: item.id,
+       name:item.name,
+       billboardLabel:item.billboard.label,
+        createdAt: item.createdAt.split('T')[0],
+      }));
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'>
-      {billboards  && <CategoryClient data={billboards}/> }  
+      {category  && <CategoryClient data={formattedCategories}/> }  
             </div>
         </div>
     )
 }
-export default BillBoards;
+export default Categories;

@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { BillboardColumn } from "./columns";
+import { CategoryColumn } from "./columns";
 import { redis } from "@/lib/redis";
 import { toast } from "@/components/ui/use-toast";
 
 
 interface CellActionProps {
-  data: BillboardColumn;
+  data:CategoryColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -35,7 +35,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     setLoading(true)
     const token= await redis.get('token')
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${data?.id}`,{
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/category/${data?.id}`,{
         headers:{
             "Content-Type":"application/json",
             Authorization:`Bearer ${token}`
@@ -43,12 +43,11 @@ export const CellAction: React.FC<CellActionProps> = ({
     }).then(()=>{
         setLoading(false)
         toast({
-            title:'Billboard deleted',
+            title:'Category deleted',
             description:'Your billboard has been deleted successfully'
         })
         setOpen(false)
         router.refresh()
-        router.push(`/${params.storeId}/billboards`)
     }).catch(()=>{
         setLoading(false)
         setOpen(false)
@@ -91,7 +90,7 @@ export const CellAction: React.FC<CellActionProps> = ({
             <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+            onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
