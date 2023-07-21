@@ -1,28 +1,40 @@
 "use client"
 import React from 'react';
-import {CategoryClient} from './components/CategoryClient';
+import { useRouter } from 'next/navigation';
 import useGetAllCategories from '@/hooks/useGetAllCategories';
-import { CategoryColumn } from './components/columns';
 
+import { columns } from './components/columns';
+import { Heading } from '@/components/ui/heading';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { DataTable } from '@/components/ui/data-table';
 
+import { PlusIcon } from 'lucide-react';
 type pageProps = {
     params:{
         storeId:string
     }
 };
 const Categories:React.FC<pageProps> = ({params}) => {
-    const {data:category,isLoading}=useGetAllCategories(params.storeId)
-    if(!category) return <div className='flex justify-center items-center h-full'>Category data is loading....</div>
-    const formattedCategories:CategoryColumn[] = category.map((item) => ({
-        id: item.id,
-       name:item.name,
-       billboardLabel:item.billboard.label,
-        createdAt: item.createdAt.split('T')[0],
-      }));
+    const {data}=useGetAllCategories(params.storeId)
+    const router = useRouter()
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'>
-      {category  && <CategoryClient data={formattedCategories}/> }  
+            <div className='flex justify-between items-center'>
+      <Heading
+        title={data===undefined?`Categories(0)`:`Categories (${(data?.length)})`}
+        description='List of all categories'
+         />  
+        <Button  onClick={() => router.push(`/${params.storeId}/categories/new`)}>
+          <PlusIcon className="mr-2 h-4 w-4" /> Add New
+        </Button>
+        </div>
+        <Separator className='my-4'/>
+        <div className='border-2 border-gray-500 p-5 rounded-lg'>
+
+        {data && <DataTable columns={columns} searchKey='name' data={data} />}
+        </div>
             </div>
         </div>
     )

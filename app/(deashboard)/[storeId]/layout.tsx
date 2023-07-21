@@ -22,7 +22,7 @@ export default  function DashBoardLayout({
   }
  else if(!store && storeLoading){
     return (
-      <div className="flex justify-center items-center h-screen text-xl font-bold">Loading.......</div>
+      <div className="flex justify-center items-center h-screen text-xl font-bold">Data is featching......</div>
     )
   }
   else if(!store && !storeLoading){

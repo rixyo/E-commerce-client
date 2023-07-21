@@ -14,7 +14,6 @@ const CategoryPage = ({params}:{
     }
 }) => {
     const pathname=usePathname();
-    console.log(params.categoryId)
     const {data:category}=useGetCategoryById(params.categoryId)
     return (
         <div className="flex-col">

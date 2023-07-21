@@ -1,5 +1,6 @@
 "use client"
 import { cn } from '@/lib/utils';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import React from 'react';
@@ -27,6 +28,12 @@ export  function MainNav({
             href:`/${params.storeId}/categories`,
             label:'Categories',
             isActive:pathname.includes('categories')
+
+        },
+        {
+            href:`/${params.storeId}/sizes`,
+            label:'Sizes',
+            isActive:pathname.includes('sizes')
 
         },
         {
