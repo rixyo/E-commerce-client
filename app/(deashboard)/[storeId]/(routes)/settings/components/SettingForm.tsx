@@ -49,8 +49,6 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
             },
         }).then((res)=>{
             setLoading(false)
-            
-            
             toast({
                 title:'Store name updated',
                 description:'Your store name has been updated successfully'

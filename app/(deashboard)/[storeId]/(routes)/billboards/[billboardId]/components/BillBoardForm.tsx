@@ -64,7 +64,6 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
                 title:'Success',
                 description:toastMessage
             })
-            router.refresh()
             router.push(`/${params.storeId}/billboards/${initialData.id}`)
           })
         }else{
@@ -80,7 +79,6 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
                   title:'Success',
                   description:toastMessage
               })
-              router.refresh()
               router.push(`/${params.storeId}/billboards`)
              
               
@@ -113,7 +111,6 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
             })
             router.push(`/${params.storeId}/billboards`)
         }).catch((error)=>{
-            setLoading(false)
             console.log(error)
             toast({
                 variant:'destructive',

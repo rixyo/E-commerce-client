@@ -4,17 +4,9 @@ export interface Size {
     id: string;
     name: string;
     storeId: string;
-    value: SizeType;
-    createdAt: string;
+    value: string;
+    createdAt: Date;
 }
-enum SizeType {
-    SMALL,
-    MEDIUM,
-    LARGE,
-    XLARGE,
-    XXLARGE,
-    XXXLARGE
-  }
 const useGetAllSizes =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
         queryKey:["AllSizes"],

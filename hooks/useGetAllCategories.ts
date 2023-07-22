@@ -7,7 +7,7 @@ export interface Category {
         label: string;
     };
     storeId: string;
-    createdAt: string;
+    createdAt: Date;
 }
 const useGetAllCategories =  (storeId:string) => {
     const { data, isLoading, isError } = useQuery({

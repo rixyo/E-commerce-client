@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { SizeColumn} from "./columns";
+import { ColorColumn} from "./columns";
 import { redis } from "@/lib/redis";
 import { toast } from "@/components/ui/use-toast";
 
 
 interface CellActionProps {
-  data: SizeColumn;
+  data: ColorColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -35,7 +35,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     setLoading(true)
     const token= await redis.get('token')
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/size/${data?.id}`,{
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/color/${data?.id}`,{
         headers:{
             "Content-Type":"application/json",
             Authorization:`Bearer ${token}`
@@ -44,10 +44,10 @@ export const CellAction: React.FC<CellActionProps> = ({
         setLoading(false)
         toast({
             title:'Success',
-            description:'Size deleted successfully.'
+            description:'color deleted successfully.'
         })
-        setOpen(false)
         router.refresh()
+        setOpen(false)
     }).catch((error)=>{
         setLoading(false)
         console.log(error)
@@ -55,7 +55,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         toast({
             variant:'destructive',
             title:'Error',
-            description:'Make sure you removed all products using this size first.'
+            description:'Make sure you removed all products using this color first.'
         })
     }).finally(()=>{
         setLoading(false)
@@ -91,7 +91,7 @@ export const CellAction: React.FC<CellActionProps> = ({
             <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/sizes/${data?.id}`)}
+            onClick={() => router.push(`/${params.storeId}/colors/${data?.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

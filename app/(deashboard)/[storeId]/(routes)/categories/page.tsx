@@ -2,8 +2,9 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import useGetAllCategories from '@/hooks/useGetAllCategories';
+import { format } from 'date-fns';
 
-import { columns } from './components/columns';
+import { columns,CategoryColumn } from './components/columns';
 import { Heading } from '@/components/ui/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -16,8 +17,18 @@ type pageProps = {
     }
 };
 const Categories:React.FC<pageProps> = ({params}) => {
-    const {data}=useGetAllCategories(params.storeId)
+    const {data:category}=useGetAllCategories(params.storeId)
     const router = useRouter()
+    if(!category){
+        return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
+    }
+    const data:CategoryColumn[]=category.map((item)=>({
+        id:item.id,
+        name:item.name,
+        label:item.billboard.label,
+        createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
+    }))
+
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'>

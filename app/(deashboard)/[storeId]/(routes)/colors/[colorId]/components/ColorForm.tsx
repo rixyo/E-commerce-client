@@ -7,55 +7,55 @@ import { redis } from '@/lib/redis';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
-import {  useParams, useRouter } from 'next/navigation';
-import useGetAllBillboards from '@/hooks/useGetAllBillboards';
 
 import { Heading } from '@/components/ui/heading';
 import { Separator } from "@/components/ui/separator"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
+import {  useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
-import { Category } from '@/hooks/useGetAllCategories';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 
-
+type Color= {
+    id:string;
+    name:string;
+    value:string;
+}
 type FormProps = {
-    initialData:Category | undefined;
+    initialData:Color | undefined;
     
 };
 const formSchema=z.object({
-    name:z.string().min(3,"Must be at least 3 characters"),
-    billboardId:z.string().min(3,"Must be at least 3 characters"),
+  name:z.string().min(3,"Must be at least 3 characters"),
+  value: z.string().min(4).max(9).regex(/^#/, {
+    message: 'String must be a valid hex code'
+  }),
 })
 
 
-const CategoryForm:React.FC<FormProps> = ({initialData}) => {
+const ColorForm:React.FC<FormProps> = ({initialData}) => {
     const [open,setOpen] = useState<boolean>(false)
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter();
     const params = useParams();
-    const {data:billboards} = useGetAllBillboards(params.storeId)
-    const title = initialData ? 'Edit category' : 'Create category';
-    const description = initialData ? 'Edit a category.' : 'Add a new category';
-    const toastMessage = initialData ? 'Category updated.' : 'Category created.';
+    const title = initialData ? 'Edit Color' : 'Create Color';
+    const description = initialData ? 'Edit a Color.' : 'Add a new Color';
+    const toastMessage = initialData ? 'Color updated.' : 'Color created.';
     const action = initialData ? 'Save changes' : 'Create';
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:initialData || {
-          name: '',
-          billboardId: '',
-
-          
+          name:'',
+          value:''
         }    
     })
+    
     const onSubmit=async(value:z.infer<typeof formSchema>)=>{
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          if(value.name===initialData.name) return;
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/update/${initialData.id}`,value,{
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/color/${params.storeId}/update/${initialData.id}`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -66,11 +66,11 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                 title:'Success',
                 description:toastMessage
             })
-            router.push(`/${params.storeId}/categories/${initialData.id}`)
+            router.push(`/${params.storeId}/colors/${initialData.id}`)
           })
         }else{
 
-          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/create`,value,{
+          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/color/${params.storeId}/create`,value,{
               headers:{
                   "Content-Type":"application/json",
                   Authorization:`Bearer ${token}`
@@ -81,7 +81,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                   title:'Success',
                   description:toastMessage
               })
-              router.push(`/${params.storeId}/categories`)
+              router.push(`/${params.storeId}/colors`)
              
               
           }).catch((error)=>{
@@ -99,7 +99,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
     const deleteStore=async()=>{
         setLoading(true)
         const token= await redis.get('token')
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/category/${initialData?.id}`,{
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/color/${initialData?.id}`,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -107,17 +107,17 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         }).then(()=>{
             setLoading(false)
             toast({
-                title:'Category deleted',
-                description:'Category has been deleted successfully'
+                title:'Success',
+                description:'Size deleted.'
             })
-            router.push(`/${params.storeId}/categories`)
+            router.push(`/${params.storeId}/colors`)
         }).catch((error)=>{
             setLoading(false)
             console.log(error)
             toast({
                 variant:'destructive',
                 title:'Error',
-                description:'Something went worng.'
+                description:'Make sure you removed all products using this color first.'
             })
         }).finally(()=>{
             setLoading(false)
@@ -157,30 +157,29 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Category Name" {...field} />
+                
+                    <Input disabled={loading} placeholder="value" {...field} />
+                   
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-                  <FormField
+                <FormField
               control={form.control}
-              name="billboardId"
+              name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Billboard</FormLabel>
-                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="Select a billboard" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {billboards?.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}>{billboard.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Value</FormLabel>
+                  <FormControl>
+                  <div className="flex items-center gap-x-4">
+                      <Input disabled={loading} placeholder="Color value" {...field} />
+                      <div 
+                        className="border p-4 rounded-full" 
+                        style={{ backgroundColor: field.value }}
+                      />
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -194,4 +193,4 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         </>
     )
 }
-export default CategoryForm;
+export default ColorForm;

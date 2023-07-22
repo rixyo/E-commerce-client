@@ -1,14 +1,14 @@
 "use client"
 import React from 'react';
-import useGetAllSizes from '@/hooks/useGetAllSizes';
 import {  useRouter } from 'next/navigation';
+import useGetAllColors from '@/hooks/useGetAllColors';
 import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import { columns, SizeColumn} from './components/columns';
+import { columns,ColorColumn } from './components/columns';
 
 
 import { PlusIcon } from 'lucide-react';
@@ -18,18 +18,20 @@ type pageProps = {
         storeId:string
     }
 };
-const Sizes:React.FC<pageProps> = ({params}) => {
-    const {data:sizes}=useGetAllSizes(params.storeId)
+const Colors:React.FC<pageProps> = ({params}) => {
+    const {data:colors}=useGetAllColors(params.storeId)
     const router = useRouter()
-    if(!sizes){
-      return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
+    if(!colors){
+        return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
     }
-    const data:SizeColumn[]=sizes.map((item)=>({
+    const data:ColorColumn[]=colors.map((item)=>({
         id:item.id,
         name:item.name,
         value:item.value,
         createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
     }))
+
+  
     return (
         <>
           <div className='flex-col'>
@@ -37,21 +39,21 @@ const Sizes:React.FC<pageProps> = ({params}) => {
    
         <div className='flex justify-between items-center'>
       <Heading
-        title={data===undefined?`Sizes(0)`:`Sizes (${(data?.length)})`}
+        title={data===undefined?`Colors(0)`:`Colors (${(data?.length)})`}
         description='List of all sizes'
          />  
-        <Button  onClick={() => router.push(`/${params.storeId}/sizes/new`)}>
+        <Button  onClick={() => router.push(`/${params.storeId}/colors/new`)}>
           <PlusIcon className="mr-2 h-4 w-4" /> Add
         </Button>
         </div>
         <Separator className='my-4'/>
         <div className='border-2 border-gray-500 p-5 rounded-lg'>
 
-       <DataTable columns={columns} searchKey='name' data={data} /> 
+        <DataTable columns={columns} searchKey='name' data={data} /> 
         </div>
             </div>
         </div>
         </>
     )
 }
-export default Sizes;
+export default Colors;

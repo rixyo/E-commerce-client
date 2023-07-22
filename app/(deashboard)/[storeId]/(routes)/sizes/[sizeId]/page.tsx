@@ -1,24 +1,25 @@
 "use client";
 import React, { Suspense } from 'react';
-import BillboardForm from './components/SizeForm';
-import useBillBoardById from '@/hooks/useBillBoardById';
+import SizeForm from './components/SizeForm';
+;
 import { usePathname } from 'next/navigation';
+import useGetSizeById from '@/hooks/useGetSizeById';
 
 
 const SizePage = ({params}:{
     params:{
-        billboardId:string
+        sizeId:string
         storeId:string
     }
 }) => {
     const pathname=usePathname();
-    const {data:billboard,isLoading}=useBillBoardById(params.billboardId)
+    const {data:size,isLoading}=useGetSizeById(params.sizeId)
     return (
         <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
-       {pathname.includes('new') && <BillboardForm initialData={undefined} />  }  
+       {pathname.includes('new') && <SizeForm initialData={undefined} />  }  
      
-       {billboard &&!isLoading && <BillboardForm initialData={billboard} />}
+       {size &&!isLoading && <SizeForm initialData={size} />}
         </div>
       </div>
     )
