@@ -10,16 +10,9 @@ export interface Product {
         id:string;
         name:string;
     };
-    color:{
-        id:string;
-        name:string;
-        value:string;
-    };
-    size:{
-        id:string;
-        name:string;
-        value:string;
-    };
+    description: string;
+    colors: { value: string }[];
+    sizes: { value: string }[];
     images: { url: string }[];
     createdAt: Date;
     isFeatured: boolean;

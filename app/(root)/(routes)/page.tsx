@@ -16,11 +16,11 @@ export default function SetupPage() {
       if(!user && !isLoading){
           redirect('/auth')
      }
-    else if(!isOpen && user && !isLoading && !store && !storeLoading){
+    else if(!isOpen && user && !store){
      onOpen()
     }
 
     
-  }, [isOpen,onOpen,user,isLoading,store,storeLoading]);
+  }, [isOpen,onOpen,user,isLoading,store]);
   return null;
 }

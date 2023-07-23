@@ -19,7 +19,8 @@ const useStore = (id:string) => {
             
                 return data as Store
             
-        }
+        },
+        staleTime:10000
     })
   return {
     data,

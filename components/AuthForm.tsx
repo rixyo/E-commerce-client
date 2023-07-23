@@ -35,7 +35,9 @@ const AuthForm:React.FC = () => {
             title: "Login Success",
             description: "You have been logged in successfully",
         })
+        console.log(res.data,"data")
        const token = await redis.get('token')
+       console.log(token,"token")
        if(!token){
         await redis.set('token',res.data,{
             ex:60*60*24*1

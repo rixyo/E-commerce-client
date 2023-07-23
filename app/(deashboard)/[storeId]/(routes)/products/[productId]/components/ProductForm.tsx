@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import * as z from 'zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { redis } from '@/lib/redis';
 import axios from 'axios';
@@ -17,38 +17,31 @@ import {  useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
 import ImageUpload from '@/components/ui/image-upload';
 import { Product } from '@/hooks/useGetAllProducts';
-import { Color } from '@/hooks/useGetAllColors';
-import { Size } from '@/hooks/useGetAllSizes';
+
 import { Category } from '@/hooks/useGetAllCategories';
 
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-type Image = {
-  url: string;
-}
 interface ProductFormProps {
-  initialData: Product & {
-    images: Image[]
-  } | undefined;
+  initialData: Product | undefined;
   categories: Category[];
-  colors: Color[];
-  sizes: Size[];
 };
+
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
   categoryId: z.string().min(1),
-  colorId: z.string().min(1),
-  sizeId: z.string().min(1),
+  colors:z.object({value:z.string()}).array(),
+  sizes:z.object({value:z.string()}).array(),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional()
 });
 type ProductFormValues = z.infer<typeof formSchema>
 
 
-const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,sizes}) => {
+const ProductForm:React.FC<ProductFormProps> = ({initialData,categories}) => {
     const [open,setOpen] = useState<boolean>(false)
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter();
@@ -57,7 +50,7 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
     const description = initialData ? 'Edit a billboard.' : 'Add a new billboard';
     const toastMessage = initialData ? 'Billboard updated.' : 'Billboard created.';
     const action = initialData ? 'Save changes' : 'Create';
-    const defaultValues = initialData!==undefined? {
+    const defaultValues = initialData !== undefined ? {
       ...initialData,
       price: parseFloat(String(initialData?.price)),
     } : {
@@ -65,11 +58,11 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
       price: 0,
       Images: [],
       categoryId: '',
-      colorId: '',
-      sizeId: '',
+      colors:[],
+      sizes:[],
       isFeatured: false,
-      isArchived: false
-
+      isArchived: false,
+   
     };
     const form = useForm<ProductFormValues>({
       resolver: zodResolver(formSchema),
@@ -94,7 +87,6 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
             router.push(`/${params.storeId}/products/${initialData.id}`)
           })
         }else{
-
           await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/create`,value,{
               headers:{
                   "Content-Type":"application/json",
@@ -148,6 +140,34 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
             setLoading(false)
         })
     }
+    const { fields: colorFields, append: colorAppend, remove: colorRemove } = useFieldArray({
+      name: "colors",
+      control: form.control
+    });
+    const { fields: sizeFields, append: sizeAppend, remove: sizeRemove } = useFieldArray({
+      name: "sizes",
+      control: form.control
+    });
+    const onColorAdd=()=>{
+      colorAppend({value:""})
+    }
+    const onColorRemove=(index:number)=>{
+      colorRemove(index)
+    }
+    const onSizeAdd=()=>{
+      sizeAppend({value:""})
+
+    }
+    const onSizeRemove=(index:number)=>{
+      sizeRemove(index)
+    }
+    const onColorChange=(index:number,value:string)=>{
+      colorFields[index].value=value
+    }
+    const onSizeChange=(index:number,value:string)=>{
+      sizeFields[index].value=value
+    }
+  
     
     return (
       <>
@@ -201,7 +221,7 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input disabled={loading} placeholder="Product name" {...field} />
+                      <Input disabled={loading}  placeholder="Product name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -220,7 +240,7 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
                   </FormItem>
                 )}
               />
-              <FormField
+               <FormField
                 control={form.control}
                 name="categoryId"
                 render={({ field }) => (
@@ -243,50 +263,7 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories,colors,s
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="sizeId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Size</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue defaultValue={field.value} placeholder="Select a size" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {sizes?.map((size) => (
-                          <SelectItem key={size.id} value={size.id}>{size.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="colorId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Color</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue defaultValue={field.value} placeholder="Select a color" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {colors?.map((color) => (
-                          <SelectItem key={color.id} value={color.id}>{color.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+             
               <FormField
                 control={form.control}
                 name="isFeatured"
