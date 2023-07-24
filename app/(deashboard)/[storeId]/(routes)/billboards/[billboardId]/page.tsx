@@ -1,8 +1,9 @@
 "use client";
-import React, { Suspense } from 'react';
-import BillboardForm from './components/BillBoardForm';
-import useBillBoardById from '@/hooks/useBillBoardById';
+import React from 'react';
 import { usePathname } from 'next/navigation';
+import useBillBoardById from '@/hooks/useBillBoardById';
+
+import BillboardForm from './components/BillBoardForm';
 
 
 const BillBoardPage = ({params}:{

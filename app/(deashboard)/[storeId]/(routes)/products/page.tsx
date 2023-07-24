@@ -42,7 +42,7 @@ const Products:React.FC<pageProps> = ({params}) => {
             <div className='flex justify-between items-center'>
       <Heading
         title={data===undefined?'Products(0)':`Products (${(data?.length)})`}
-        description='BillBoard is a place where you can advertise your products'
+        description='Manage your products here'
          />  
         <Button  onClick={() => router.push(`/${params.storeId}/products/new`)}>
           <PlusIcon className="mr-2 h-4 w-4" /> Add

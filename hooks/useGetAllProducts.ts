@@ -6,14 +6,15 @@ export interface Product {
     id: string;
     name: string;
     price: number;
+    categoryId: string;
     category:{
-        id:string;
         name:string;
-    };
+
+    }
     description: string;
-    colors: { value: string }[];
-    sizes: { value: string }[];
-    images: { url: string }[];
+    Colors: { value: string }[];
+    Sizes: { value: string }[];
+    Images: { url: string }[];
     createdAt: Date;
     isFeatured: boolean;
     isArchived: boolean;

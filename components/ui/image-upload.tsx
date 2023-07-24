@@ -20,7 +20,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
   value
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -33,7 +33,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   if (!isMounted) {
     return null;
   }
-
   return ( 
     <div>
       <div className="mb-4 flex items-center gap-4">
@@ -44,12 +43,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            <Image
+           <Image
               fill
+              sizes='200px'
               className="object-cover"
               alt="Image"
               src={url}
-            />
+            /> 
           </div>
         ))}
       </div>
