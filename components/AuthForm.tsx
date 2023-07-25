@@ -35,7 +35,6 @@ const AuthForm:React.FC = () => {
             title: "Login Success",
             description: "You have been logged in successfully",
         })
-        console.log(res.data,"data")
        const token = await redis.get('token')
        console.log(token,"token")
        if(!token){
@@ -54,12 +53,7 @@ const AuthForm:React.FC = () => {
             description: "Something went wrong",
         })
       })
-    };
-    const googleAuth=async()=>{
-         
-    }
-    
-    
+    }; 
     return (
         
     <m.div className="bg-white p-10 rounded-lg sm:w-auto lg:w-1/3"
@@ -69,7 +63,7 @@ const AuthForm:React.FC = () => {
     >
         <m.h1 
          className="text-2xl font-semibold text-center mb-6">{variant==="forgotPassword"?"Forget Password":"Login to Account"}</m.h1>
-       <AuthSocialButton onClick={googleAuth} />
+       <AuthSocialButton onClick={()=>{}} />
        <div className="relative flex justify-center text-sm mt-2">
               <span className="bg-white px-2 text-gray-500">
                 Or

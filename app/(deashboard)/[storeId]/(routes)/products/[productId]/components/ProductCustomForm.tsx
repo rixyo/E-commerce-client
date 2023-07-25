@@ -32,12 +32,12 @@ initialData:Product|undefined;
 categories:Category[];
 };
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1).max(100),
   images: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
   categoryId: z.string().min(1),
   colors:z.object({value:z.string()}).array(),
-  description:z.string().min(1),
+  description:z.string().min(1).max(100),
   sizes:z.object({value:z.string()}).array(),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional()
@@ -48,7 +48,7 @@ const ProductForm:React.FC<ProductFormProps> = ({initialData,categories}) => {
   type ProductFormValues = z.infer<typeof formSchema>
   const {
 control, register,handleSubmit,
-setValue,getValues
+setValue,getValues,formState: { errors },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
   defaultValues: {
@@ -175,12 +175,17 @@ return (
  
         
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <div className="flex  gap-5">
+
         <ImageUpload
         value={getValues('images').map((image: Image) => image.url)}
         onChange={(value) => setValue('images', [...getValues('images'), { url: value }])}
         onRemove={(value) => setValue('images', getValues('images').filter((image: Image) => image.url !== value))}
-         />
+        />
+        </div>
   <div className=" md:grid md:grid-cols-3 gap-8  content-center">
+    <div className="flex-col items-center justify-center">
+      {errors.categoryId && <span className="text-red-500">{errors.categoryId.message}</span>}
   <Controller
   name="categoryId"
   control={control}
@@ -201,33 +206,43 @@ return (
     </Select>
   )}
 />
-  <Input
-    placeholder="name"
-    disabled={loading}
-    className="mt-2"
-                {...register("name")}
-                required
-              />
-            
+
+    </div>
+  <div className="flex-col justify-center items-center">
+    {errors.name && <span className="text-red-500">{errors.name.message}</span>}
+    <Input
+      placeholder="name"
+      disabled={loading}
+      className="mt-2"
+      {...register("name")}
+      />
+  </div>
+        <div className="flex-col justify-center items-center">
+
+              {errors.description && <span className="text-red-500">{errors.description.message}</span>}
                <Textarea 
                disabled={loading}
                className="mt-2"
                 placeholder="Description"
               {...register("description")}
-              required
+             
               />
-              
+        </div>
+          <div className="flex-col justify-center items-center">
+
+              {errors.price && <span className="text-red-500">{errors.price.message}</span>}
                <Input
                disabled={loading}
                 className="mt-2 mb-2"
-                placeholder="Size"
+                placeholder="Price"
              {...register("price")}
-             required
               />
+          </div>
+              
              
 
     <div className="flex items-center gap-2 justify-center">
- 
+ {errors.isFeatured && <span className="text-red-500">{errors.isFeatured.message}</span>}
   <Controller 
   name="isFeatured"
   control={control}
@@ -255,6 +270,7 @@ return (
       </label>
   </div>
   <div className="flex justify-center items-center gap-2">
+  {errors.isArchived && <span className="text-red-500">{errors.isArchived.message}</span>}
   <Controller 
   name="isArchived"
   control={control}
@@ -284,6 +300,7 @@ return (
       {fields.map((field, index) => {
         return (
           <div key={field.id} className="flex flex-col gap-5 ">
+              {errors.sizes && <span className="text-red-500">{errors.sizes.message}</span>}
             <section className="flex gap-5 p-2 " key={field.id}>
               <Input
               disabled={loading}
