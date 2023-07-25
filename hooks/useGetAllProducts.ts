@@ -6,8 +6,8 @@ export interface Product {
     id: string;
     name: string;
     price: number;
-    categoryId: string;
     category:{
+        id:string;
         name:string;
 
     }
@@ -22,11 +22,11 @@ export interface Product {
 
 }
 
-const useGetAllProducts =  (storeId:string,page:number,perPage:number) => {
+const useGetAllProducts =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
         queryKey:["AllProducts"],
         queryFn: async () => {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${storeId}/findall?page=${page}&perPage=${perPage}`)
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${storeId}/findall`)
             return data as Product[];
         }
     });

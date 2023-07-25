@@ -22,7 +22,7 @@ type pageProps = {
     }
 };
 const Products:React.FC<pageProps> = ({params}) => {
-    const {data:products}=useGetAllProducts(params.storeId,1,10)
+    const {data:products}=useGetAllProducts(params.storeId)
     const router = useRouter()
     if(!products){
         return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
@@ -34,6 +34,8 @@ const Products:React.FC<pageProps> = ({params}) => {
         isArchived: item.isArchived,
         price: formatter.format(item.price),
         category: item.category.name,
+        sizes: item.Sizes,
+        colors: item.Colors,
         createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
       }));
     return (

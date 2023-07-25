@@ -5,6 +5,8 @@ import ProductForm from './components/ProductCustomForm';
 import { usePathname } from 'next/navigation';
 import useGetProductById from '@/hooks/useGetProductById';
 import useGetAllCategories from '@/hooks/useGetAllCategories';
+import useGetAllColors from '@/hooks/useGetAllColors';
+import useGetAllSizes from '@/hooks/useGetAllSizes';
 
 
 
@@ -14,14 +16,16 @@ const ProductPage = ({params}:{
         storeId:string
     }
 }) => {
-    const {data:product,isLoading}=useGetProductById(params.productId)
-    const {data:categories,isLoading:categoriesLoading}=useGetAllCategories(params.storeId)
+    const {data:product}=useGetProductById(params.productId)
+    const {data:categories}=useGetAllCategories(params.storeId)
+    const {data:colors}=useGetAllColors(params.storeId)
+    const {data:sizes}=useGetAllSizes(params.storeId)
    const pathname=usePathname()
     return (
         <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
-        {pathname.includes('new') && categories &&!categoriesLoading && <ProductForm initialData={undefined} categories={categories}  />  }  
-      {categories &&!isLoading &&!categoriesLoading && product && <ProductForm initialData={product} categories={categories}/> } 
+        {pathname.includes('new') && categories &&colors &&sizes  && <ProductForm initialData={undefined} categories={categories} colors={colors} sizes={sizes}  />  }  
+      {categories && product &&colors &&sizes && <ProductForm initialData={product} categories={categories} colors={colors} sizes={sizes}/> } 
       
         </div>
       </div>
