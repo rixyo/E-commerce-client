@@ -1,0 +1,52 @@
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { redis } from "@/lib/redis";
+type Order ={
+    id: string;
+    address: string;
+    phone: string;
+    isPaid: boolean;
+    isDelivered: boolean;
+    deliveredAt: Date;
+    createdAt: Date;
+    quantity: number;
+    orderItems: [{
+        id: string;
+        product: {
+            id: string;
+            name: string;
+            price: number;
+            Sizes: {
+                value: string;
+            };
+            Colors: {
+                value: string;
+            };
+            Images: {
+                url: string;
+            };
+        };
+    }];
+
+}
+const useGetAllOrders = (storeId: string) => {
+    const {data,isLoading,isError} = useQuery({
+        queryKey:["AllOrders"],
+        queryFn: async () => {
+            const token= await redis.get('token');
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/${storeId}/findall`,{
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            return data as Order[];
+        },
+    });
+    return {
+        data,
+        isLoading,
+        isError,
+    }
+
+};
+export default useGetAllOrders;

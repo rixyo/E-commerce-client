@@ -49,6 +49,12 @@ export  function MainNav({
 
         },
         {
+            href:`/${params.storeId}/orders`,
+            label:'Orders',
+            isActive:pathname.includes('orders')
+
+        },
+        {
             href:`/${params.storeId}/settings`,
             label:'Settings',
             isActive:pathname.includes('settings')
