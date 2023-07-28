@@ -53,8 +53,7 @@ const StoreModal:React.FC=() => {
     };
     return(
    <Modal isOpen={StoreModal.isOpen} onClose={StoreModal.onClose} title="Create Store" description="Add a store to manage product and categories">
-    <div
-    >
+    <div>
 
     <div className='space-y-4 py-2 pb-4 '>
        <Form {...form}>
