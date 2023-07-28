@@ -20,7 +20,6 @@ const AuthForm:React.FC = () => {
     const formSchema = z.object({
         email: z.string().email("Must be a valid email"),
         password: z.string().min(6, "Must be at least 6 characters"),
-
     });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -36,7 +35,6 @@ const AuthForm:React.FC = () => {
             description: "You have been logged in successfully",
         })
        const token = await redis.get('token')
-       console.log(token,"token")
        if(!token){
         await redis.set('token',res.data,{
             ex:60*60*24*1
@@ -99,8 +97,6 @@ const AuthForm:React.FC = () => {
            </FormItem>
          )}
          />
-
-        
             <div className='flex items-center justify-end pt-6 space-x-2'>
                 <Button type='submit'>
                     Continue
@@ -110,21 +106,6 @@ const AuthForm:React.FC = () => {
 
         </form>
        </Form>
-       <div className="mt-6">
-          <div className="relative">
-            <div 
-              className="
-                absolute 
-                inset-0 
-                flex 
-                items-center
-              "
-            >
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            
-          </div>
-          </div>
          <div className='flex items-center justify-center pt-6 space-x-2'>
          <div>
           {variant === 'Login' ? 'Forget Password?' : 'Already have an account?'} 
