@@ -21,10 +21,9 @@ type pageProps = {
 const Sizes:React.FC<pageProps> = ({params}) => {
     const {data:sizes}=useGetAllSizes(params.storeId)
     const router = useRouter()
-    if(!sizes){
-      return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data:SizeColumn[]=sizes.map((item)=>({
+    console.log(sizes)
+ 
+    const data:SizeColumn[]|undefined=sizes?.map((item)=>({
         id:item.id,
         name:item.name,
         value:item.value,
@@ -47,7 +46,7 @@ const Sizes:React.FC<pageProps> = ({params}) => {
         <Separator className='my-4'/>
         <div className='border-2 border-gray-500 p-5 rounded-lg'>
 
-       <DataTable columns={columns} searchKey='name' data={data} /> 
+     {data && <DataTable columns={columns} searchKey='name' data={data} />  }  
         </div>
             </div>
         </div>

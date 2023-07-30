@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'BDT',
 });

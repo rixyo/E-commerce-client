@@ -9,7 +9,7 @@ export interface Size {
 }
 const useGetAllSizes =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
-        queryKey:["AllSizes"],
+        queryKey:["AllSizes",storeId],
         queryFn: async () => {
             const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/size/${storeId}/findall`)
             return data as Size[];

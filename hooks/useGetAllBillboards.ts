@@ -10,17 +10,12 @@ interface Billboard {
 }
 const useGetAllBillboards = (storeId:string) => {
     const {data,isLoading,isError}=useQuery({
-        queryKey:['AllBillboard'],
+        queryKey:['billboard',storeId,'findall'],
         queryFn:async()=> {
-            const token= await redis.get('token')
             const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${storeId}/findall`,{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
             })
             
-                return data as Billboard[] 
-            
+                return data as Billboard[]   
         }
     })
   return {

@@ -150,6 +150,7 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
           <FormField
               control={form.control}
               name="imageUrl"
+              defaultValue={initialData?.imageUrl}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Background image</FormLabel>
@@ -169,6 +170,7 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
             <FormField
               control={form.control}
               name="label"
+              defaultValue={initialData?.label}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Label</FormLabel>

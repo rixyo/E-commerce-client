@@ -8,6 +8,7 @@ export type CategoryColumn = {
   id: string;
   name: string;
  label:string;
+ gender:string;
   createdAt: string;
 }
 
@@ -15,6 +16,11 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",
+
+  },
+  {
+    accessorKey: "gender",
+    header: "Gender",
 
   },
   {

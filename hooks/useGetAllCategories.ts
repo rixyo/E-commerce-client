@@ -4,6 +4,7 @@ import { redis } from "@/lib/redis";
 export interface Category {
     id: string;
     name: string;
+    gender: string;
     billboard: {
         label: string;
     };

@@ -19,17 +19,16 @@ type pageProps = {
     }
 };
 const BillBoards:React.FC<pageProps> = ({params}) => {
-    const {data:billboards}=useGetAllBillboards(params.storeId)
+    const {data:billboards,isLoading}=useGetAllBillboards(params.storeId)
     const router = useRouter()
-    if(!billboards){
-        return <div
-        className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data: BillboardColumn[] = billboards.map((item) => ({
-        id: item.id,
-        label: item.label,
-        createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
-    }));
+   
+    const data:BillboardColumn[]|undefined = billboards?.map((billboard)=>{
+        return {
+            id: billboard.id,
+            label: billboard.label,
+            createdAt: format(new Date(billboard.createdAt), 'dd/MM/yyyy'),
+          }
+    })
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'>

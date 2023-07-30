@@ -26,6 +26,7 @@ const Categories:React.FC<pageProps> = ({params}) => {
         id:item.id,
         name:item.name,
         label:item.billboard.label,
+        gender:item.gender,
         createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
     }))
 

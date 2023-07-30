@@ -21,10 +21,8 @@ type pageProps = {
 const Colors:React.FC<pageProps> = ({params}) => {
     const {data:colors}=useGetAllColors(params.storeId)
     const router = useRouter()
-    if(!colors){
-        return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data:ColorColumn[]=colors.map((item)=>({
+    
+    const data:ColorColumn[]|undefined=colors?.map((item)=>({
         id:item.id,
         name:item.name,
         value:item.value,
@@ -49,7 +47,7 @@ const Colors:React.FC<pageProps> = ({params}) => {
         <Separator className='my-4'/>
         <div className='border-2 border-gray-500 p-5 rounded-lg'>
 
-        <DataTable columns={columns} searchKey='name' data={data} /> 
+       {data && <DataTable columns={columns} searchKey='name' data={data} />  } 
         </div>
             </div>
         </div>

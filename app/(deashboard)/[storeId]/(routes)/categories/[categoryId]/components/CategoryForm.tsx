@@ -28,6 +28,7 @@ type FormProps = {
 const formSchema=z.object({
     name:z.string().min(3,"Must be at least 3 characters"),
     billboardId:z.string().min(3,"Must be at least 3 characters"),
+    gender:z.string().min(3,"Must be at least 3 characters"),
 })
 
 
@@ -46,10 +47,21 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         defaultValues:initialData || {
           name: '',
           billboardId: '',
+          gender: '',
 
           
         }    
     })
+    const data=[
+      {
+        id:1,
+        value:"Male",
+      },
+      {
+        id:2,
+        value:"Female"
+      }
+    ]
     const onSubmit=async(value:z.infer<typeof formSchema>)=>{
         setLoading(true)
         const token= await redis.get('token')
@@ -153,6 +165,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
             <FormField
               control={form.control}
               name="name"
+              defaultValue={initialData?.name}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -178,6 +191,29 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                     <SelectContent>
                       {billboards?.map((billboard) => (
                         <SelectItem key={billboard.id} value={billboard.id}>{billboard.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+               <FormField
+              control={form.control}
+              name="gender"
+              defaultValue={initialData?.gender}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a Gender" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {data?.map((data) => (
+                        <SelectItem key={data.id} value={data.value}>{data.value}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
