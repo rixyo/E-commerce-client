@@ -158,7 +158,7 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                 
-                    <Input disabled={loading} placeholder="value" {...field} />
+                    <Input disabled={loading} placeholder="Name" {...field} />
                    
                   </FormControl>
                   <FormMessage />

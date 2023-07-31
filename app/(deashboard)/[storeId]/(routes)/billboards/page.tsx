@@ -26,7 +26,7 @@ const BillBoards:React.FC<pageProps> = ({params}) => {
         return {
             id: billboard.id,
             label: billboard.label,
-            createdAt: format(new Date(billboard.createdAt), 'dd/MM/yyyy'),
+            createdAt: format(new Date(billboard.createdAt), 'MMMM do, yyyy').toString(),
           }
     })
     return (

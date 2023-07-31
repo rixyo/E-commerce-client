@@ -10,7 +10,7 @@ interface Billboard {
 }
 const useGetAllBillboards = (storeId:string) => {
     const {data,isLoading,isError}=useQuery({
-        queryKey:['billboard',storeId,'findall'],
+        queryKey:['billboards'],
         queryFn:async()=> {
             const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${storeId}/findall`,{
             })

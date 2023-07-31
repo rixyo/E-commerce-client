@@ -5,7 +5,7 @@ import useFirstStore from '@/hooks/useFirstStore';
 import { redirect } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-const page:React.FC = () => {
+const Authpage:React.FC = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const {data:user,isLoading}=useCurrentUser()
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -24,4 +24,4 @@ const page:React.FC = () => {
         </div>
     )
 }
-export default page;
+export default Authpage;

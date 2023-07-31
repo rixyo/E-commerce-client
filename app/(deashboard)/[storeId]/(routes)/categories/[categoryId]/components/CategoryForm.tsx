@@ -18,6 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { AlertModal } from '@/components/modals/alert-modal';
 import { Category } from '@/hooks/useGetAllCategories';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import ImageUpload from '@/components/ui/image-upload';
 
 
 
@@ -29,6 +30,7 @@ const formSchema=z.object({
     name:z.string().min(3,"Must be at least 3 characters"),
     billboardId:z.string().min(3,"Must be at least 3 characters"),
     gender:z.string().min(3,"Must be at least 3 characters"),
+    imageUrl:z.string().url("Must be a valid url")
 })
 
 
@@ -48,6 +50,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
           name: '',
           billboardId: '',
           gender: '',
+          imageUrl: '',
 
           
         }    
@@ -66,7 +69,6 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          if(value.name===initialData.name) return;
           await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/update/${initialData.id}`,value,{
             headers:{
                 "Content-Type":"application/json",
@@ -161,6 +163,25 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         <Separator/>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <FormField
+              control={form.control}
+              name="imageUrl"
+              defaultValue={initialData?.imageUrl}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Background image</FormLabel>
+                  <FormControl>
+                    <ImageUpload 
+                      value={field.value ? [field.value] : []} 
+                      disabled={loading} 
+                      onChange={(url) => field.onChange(url)}
+                      onRemove={() => field.onChange('')}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -179,6 +200,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
                   <FormField
               control={form.control}
               name="billboardId"
+              defaultValue={initialData?.billboard.id}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Billboard</FormLabel>

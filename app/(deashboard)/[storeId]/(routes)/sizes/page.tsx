@@ -21,8 +21,6 @@ type pageProps = {
 const Sizes:React.FC<pageProps> = ({params}) => {
     const {data:sizes}=useGetAllSizes(params.storeId)
     const router = useRouter()
-    console.log(sizes)
- 
     const data:SizeColumn[]|undefined=sizes?.map((item)=>({
         id:item.id,
         name:item.name,

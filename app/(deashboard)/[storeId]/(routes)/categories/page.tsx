@@ -19,10 +19,8 @@ type pageProps = {
 const Categories:React.FC<pageProps> = ({params}) => {
     const {data:category}=useGetAllCategories(params.storeId)
     const router = useRouter()
-    if(!category){
-        return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data:CategoryColumn[]=category.map((item)=>({
+   
+    const data:CategoryColumn[]|undefined=category?.map((item)=>({
         id:item.id,
         name:item.name,
         label:item.billboard.label,
