@@ -9,8 +9,7 @@ export default  function SetupLayout({
 }){
     const {data:store,isLoading:storeLoading}=useFirstStore()
     const {data:user,isLoading}=useCurrentUser()
-    console.log(user)
-    if(!user && !isLoading){
+    if(!user){
          redirect('/auth')
      }
  else  if(store===undefined && !storeLoading){
