@@ -58,7 +58,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           const onClick = () => {
             open();
           };
-
           return (
             <Button 
               type="button" 

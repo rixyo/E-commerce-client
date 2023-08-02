@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react';
-import {motion as m} from 'framer-motion';
 import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,7 +36,7 @@ const AuthForm:React.FC = () => {
         await redis.set('token',res.data,{
             ex:60*60*24*1
         })
-       router.push("/")
+       router.push("/store")
       }).catch((error)=>{
         console.log(error)
         toast({
@@ -49,13 +48,9 @@ const AuthForm:React.FC = () => {
     }; 
     return (
         
-    <m.div className="bg-white p-10 rounded-lg sm:w-auto lg:w-1/3"
-    initial={{opacity:0}}
-        animate={{opacity:1}}
-        transition={{duration:0.75}}
-    >
-        <m.h1 
-         className="text-2xl font-semibold text-center mb-6">{variant==="forgotPassword"?"Forget Password":"Login to Account"}</m.h1>
+    <div className="bg-white p-10 rounded-lg sm:w-auto lg:w-1/3">
+        <h1 
+         className="text-2xl font-semibold text-center mb-6">{variant==="forgotPassword"?"Forget Password":"Login to Account"}</h1>
        <AuthSocialButton onClick={()=>{}} />
        <div className="relative flex justify-center text-sm mt-2">
               <span className="bg-white px-2 text-gray-500">
@@ -114,7 +109,7 @@ const AuthForm:React.FC = () => {
           </div>
          </div>
       
-    </m.div>
+    </div>
 
     )
 }

@@ -14,11 +14,11 @@ export default  function DashBoardLayout({
 }) {
   const {data:store,isLoading:storeLoading}=useStore(params.storeId)
   const {data:user,isLoading}=useCurrentUser()
-   if(!user && !isLoading){
-     redirect('/auth')
-   }
-  else if(!params.storeId || params.storeId==='undefined'){
+  if(user?.userRole!=="ADMIN" && !isLoading){
     redirect('/')
+  }
+   if(!params.storeId || params.storeId==='undefined'){
+    redirect('/store')
   }
  else if(!store && storeLoading){
     return (

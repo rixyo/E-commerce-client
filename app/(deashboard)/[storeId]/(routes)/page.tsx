@@ -1,4 +1,5 @@
 "use client";
+import useCurrentUser from '@/hooks/useCurrentUser';
 import useStore from '@/hooks/useStoreById';
 import React from 'react';
 type pageProps = {

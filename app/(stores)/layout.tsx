@@ -9,12 +9,14 @@ export default  function SetupLayout({
 }){
     const {data:store,isLoading:storeLoading}=useFirstStore()
     const {data:user,isLoading}=useCurrentUser()
-    if(!user){
-         redirect('/auth')
+    if(isLoading || storeLoading) return (
+        <div className="flex justify-center items-center h-full text-xl">Do You Know A fox canot lough</div>
+    )
+
+    
+    if(!user && !isLoading){
+         redirect('/')
      }
- else  if(store===undefined && !storeLoading){
-        redirect('/');
-    }
         else if(store && !storeLoading){
         redirect(`/${store.id}`)
         }

@@ -1,26 +1,11 @@
-"use client";
-import { useStoreModal } from "@/hooks/use-store-model";
-import useCurrentUser from "@/hooks/useCurrentUser";
-import useFirstStore from "@/hooks/useFirstStore";
+"use client"
+import AuthForm from '@/components/AuthForm';
 
-import { redirect } from "next/navigation";
-import React,{useEffect} from "react";
-export default function SetupPage() {
-  const onOpen = useStoreModal(state=>state.onOpen);
-  const isOpen = useStoreModal(state=>state.isOpen);
-  const {data:user,isLoading}=useCurrentUser()
-  const {data:store,isLoading:storeLoading}=useFirstStore()
-
-
-  useEffect(() => {
-      if(!user && !isLoading){
-          redirect('/auth')
-     }
-    else if(!store && user && !isOpen && !storeLoading){
-     onOpen()
-    }
-
-    
-  }, [isOpen,onOpen,user,isLoading,store,storeLoading]);
-  return null;
+const Authpage:React.FC = () => {
+    return (
+        <div className="flex items-center justify-center h-full bg-[url('/signin-bg.svg')]">
+        <AuthForm/>
+        </div>
+    )
 }
+export default Authpage;
