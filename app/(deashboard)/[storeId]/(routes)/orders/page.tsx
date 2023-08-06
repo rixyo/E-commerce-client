@@ -17,13 +17,10 @@ type pageProps = {
     }
 };
 const Orders:React.FC<pageProps> = ({params}) => {
-    const {data:orders}=useGetAllOrders(params.storeId)
+    const {data:orders,isLoading}=useGetAllOrders(params.storeId)
     const router = useRouter()
-    if(!orders){
-        return <div
-        className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data:OrderColumn[] = orders.map((item) => ({
+  
+    const data:OrderColumn[]|undefined = orders?.map((item) => ({
         id: item.id,
         address: item.address,
         phone: item.phone,
@@ -31,9 +28,11 @@ const Orders:React.FC<pageProps> = ({params}) => {
         totalPrice: formatter.format(item.orderItems.reduce((total, item) => {
             return total + Number(item.product.price)
           }, 0)),
+        orderItemsQuantity:item.orderItems.map((item)=>item.quantity).join(', '),
+        orderItemsSize:item.orderItems.map((item)=>item.size).join(', '),
+        orderItemsColor:item.orderItems.map((item)=>item.color),
         isDelivered: item.isDelivered,
         isPaid: item.isPaid,
-        quantity: item.quantity,
         createdAt:format(new Date(item.createdAt), 'MMMM do, yyyy').toString(),
     }));
     return (

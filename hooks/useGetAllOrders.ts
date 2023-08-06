@@ -9,23 +9,16 @@ type Order ={
     isDelivered: boolean;
     deliveredAt: Date;
     createdAt: Date;
-    quantity: number;
     orderItems: [{
         id: string;
         product: {
             id: string;
             name: string;
             price: number;
-            Sizes: {
-                value: string;
-            };
-            Colors: {
-                value: string;
-            };
-            Images: {
-                url: string;
-            };
         };
+        quantity: number;
+        color: string;
+        size: string;
     }];
 
 }
