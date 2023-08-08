@@ -46,7 +46,7 @@ const Orders:React.FC<pageProps> = ({params}) => {
         </>
         <Separator className='my-4'/>
         <div className='border-2 border-gray-500 p-5 rounded-lg'>
-      {data && <DataTable columns={columns} searchKey='orderItems' data={data} /> }  
+      {data && <DataTable columns={columns} searchKey='id' data={data} /> }  
         </div>
    
             </div>
