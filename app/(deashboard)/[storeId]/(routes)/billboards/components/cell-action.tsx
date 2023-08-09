@@ -1,5 +1,5 @@
+// Note: This component is used in the billboard table to show the actions menu for each billboard
 "use client";
-
 import axios from "axios";
 import { useState } from "react";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";

@@ -1,7 +1,8 @@
+// this is the page for the size form 
 "use client";
 import React, { Suspense } from 'react';
 import SizeForm from './components/SizeForm';
-;
+
 import { usePathname } from 'next/navigation';
 import useGetSizeById from '@/hooks/useGetSizeById';
 

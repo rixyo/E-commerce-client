@@ -1,3 +1,4 @@
+// this is parent component for all billboards routes
 "use client"
 import { format } from 'date-fns';
 import React from 'react';
@@ -19,9 +20,10 @@ type pageProps = {
     }
 };
 const BillBoards:React.FC<pageProps> = ({params}) => {
-    const {data:billboards,isLoading}=useGetAllBillboards(params.storeId)
+    // fetch all billboards based on storeId
+    const {data:billboards}=useGetAllBillboards(params.storeId)
     const router = useRouter()
-   
+   // format data to be used in data table
     const data:BillboardColumn[]|undefined = billboards?.map((billboard)=>{
         return {
             id: billboard.id,

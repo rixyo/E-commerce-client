@@ -1,3 +1,4 @@
+// layout for store page
 "use client"
 import { useStoreModal } from "@/hooks/use-store-model";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -8,12 +9,13 @@ export default  function SetupLayout({
 }:{
     children:React.ReactNode
 }){
+    // this is the hook that gets the first store
     const {data:store,isLoading:storeLoading}=useFirstStore()
+    // this is the hook that gets the current user
     const {data:user,isLoading}=useCurrentUser()
     const onOpen = useStoreModal(state=>state.onOpen);
-    const isOpen = useStoreModal(state=>state.isOpen);
     if(storeLoading) return (
-        <div className="flex justify-center items-center h-full text-xl">Do You Know A fox canot lough</div>
+        <div className="flex justify-center items-center h-full text-xl">Do You Know A fox cann`&lsquo;`t lough</div>
     )
     else if(!store && !storeLoading){
         onOpen()

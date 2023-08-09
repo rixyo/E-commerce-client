@@ -1,18 +1,19 @@
+// this page is for single order
 "use client";
 import React from 'react';
 
-import ColorForm from './components/OrderForm';
+import OrderForm from './components/OrderForm';
 import useGetOrderById from '@/hooks/useGetOrderById';
 
-const ColorPage = ({params}:{
+const OrderPage = ({params}:{
     params:{
         orderId:string
       
     }
 }) => {
-  
-    const {data:order,isLoading}=useGetOrderById(params.orderId)
-    console.log(order)
+  // fetch order by id
+    const {data:order}=useGetOrderById(params.orderId)
+    // set initial data
     const data= {
         id:order?.id,
         isDelivered:order?.isDelivered,
@@ -20,9 +21,9 @@ const ColorPage = ({params}:{
     return (
         <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
-       {order&& <ColorForm initialData={data} />}
+       {order&& <OrderForm initialData={data} />}
         </div>
       </div>
     )
 }
-export default ColorPage;
+export default OrderPage;

@@ -14,6 +14,7 @@ const ColorPage = ({params}:{
     }
 }) => {
     const pathname=usePathname();
+    // fetch color by id
     const {data:color,isLoading}=useGetColorById(params.colorId)
     return (
         <div className="flex-col">

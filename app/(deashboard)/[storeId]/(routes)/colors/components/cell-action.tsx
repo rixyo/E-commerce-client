@@ -1,3 +1,4 @@
+// Note: This component is used in the color table to show the actions menu for each color
 "use client";
 
 import axios from "axios";

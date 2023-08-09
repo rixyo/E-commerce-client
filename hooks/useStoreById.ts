@@ -1,3 +1,5 @@
+// Type: custom hook
+// Description: export a custom hook that fetches a store by id
 import { redis } from "@/lib/redis";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

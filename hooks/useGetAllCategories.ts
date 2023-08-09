@@ -1,3 +1,4 @@
+// this hook is used to get all categories from the server
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 

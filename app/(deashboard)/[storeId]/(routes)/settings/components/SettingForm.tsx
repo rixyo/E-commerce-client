@@ -1,3 +1,4 @@
+// this is the setting form for the store owner to change the store name
 "use client"
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';

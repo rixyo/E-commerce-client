@@ -1,3 +1,4 @@
+// Note: This file is used for the category table columns
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"

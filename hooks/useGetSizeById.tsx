@@ -1,3 +1,4 @@
+// this hook is used to get a size by id
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Size } from "./useGetAllSizes";

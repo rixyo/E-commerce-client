@@ -1,3 +1,4 @@
+// parent component for single billboard route
 "use client";
 import React from 'react';
 import { usePathname } from 'next/navigation';

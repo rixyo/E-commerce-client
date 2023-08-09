@@ -1,6 +1,6 @@
+// this hook is used to get all billboards of a store
 import axios from "axios";
 import {useQuery} from "@tanstack/react-query"
-import { redis } from "@/lib/redis";
 interface Billboard {
     id:string,
     label:string,

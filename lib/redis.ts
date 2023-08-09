@@ -1,3 +1,5 @@
+// use the Redis client from @upstash/redis package
+// only set the token and url if they are not already set
 import { Redis } from '@upstash/redis'
 const getRedisUrl = () => {
   if(process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL){

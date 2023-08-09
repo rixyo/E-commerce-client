@@ -1,3 +1,4 @@
+// used for: auth page
 "use client"
 import AuthForm from '@/components/AuthForm';
 

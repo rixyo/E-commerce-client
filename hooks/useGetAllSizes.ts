@@ -1,3 +1,4 @@
+// this hook is used to get all sizes of a store
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 export interface Size {

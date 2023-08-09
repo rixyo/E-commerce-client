@@ -1,7 +1,7 @@
+// this page is for the store owner to see all orders
 "use client"
 import { format } from 'date-fns';
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { formatter } from '@/lib/utils';
 
 import { columns, OrderColumn } from './components/columns';
@@ -17,9 +17,10 @@ type pageProps = {
     }
 };
 const Orders:React.FC<pageProps> = ({params}) => {
-    const {data:orders,isLoading}=useGetAllOrders(params.storeId)
-    const router = useRouter()
-  
+    // this is the hook that gets all the orders
+    const {data:orders}=useGetAllOrders(params.storeId)
+ 
+  // convert the data to the format that the data table can understand
     const data:OrderColumn[]|undefined = orders?.map((item) => ({
         id: item.id,
         address: item.address,
@@ -28,6 +29,7 @@ const Orders:React.FC<pageProps> = ({params}) => {
         totalPrice: formatter.format(item.orderItems.reduce((total, item) => {
             return total + Number(item.product.price)
           }, 0)),
+          // this is to get the quantity of each item in the order
         orderItemsQuantity:item.orderItems.map((item)=>item.quantity).join(', '),
         orderItemsSize:item.orderItems.map((item)=>item.size).join(', '),
         orderItemsColor:item.orderItems.map((item)=>item.color),

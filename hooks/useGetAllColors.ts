@@ -1,3 +1,4 @@
+// this hook is used to get all colors from the database
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 export interface Color {

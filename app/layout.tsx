@@ -1,3 +1,4 @@
+// Purpose: Layout for the application
 "use client"
 import './globals.css'
 import { Toaster } from "@/components/ui/toaster"

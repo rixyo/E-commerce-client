@@ -1,3 +1,4 @@
+// Note: This component is used in the category table to show the actions menu for each category
 "use client";
 
 import axios from "axios";

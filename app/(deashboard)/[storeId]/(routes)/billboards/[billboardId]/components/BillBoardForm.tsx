@@ -1,3 +1,5 @@
+// this component is use to create a new billboard or update an existing one
+// used react-hook-form for form validation
 "use client"
 import React, { useState } from 'react';
 import * as z from 'zod';

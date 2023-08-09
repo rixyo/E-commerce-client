@@ -1,3 +1,4 @@
+// Note: This is a layout for dashboard
 "use client"
 import Navbar from "@/components/Navbar"
 import useCurrentUser from "@/hooks/useCurrentUser"
@@ -12,19 +13,25 @@ export default  function DashBoardLayout({
   children: React.ReactNode
     params: {storeId:string}
 }) {
+  // this is the hook that gets the store by id
   const {data:store,isLoading:storeLoading}=useStore(params.storeId)
+  // this is the hook that gets the current user
   const {data:user,isLoading}=useCurrentUser()
+  // if the user is not admin and the data is not loading then redirect to home page
   if(user?.userRole!=="ADMIN" && !isLoading){
     redirect('/')
   }
-   if(!params.storeId || params.storeId==='undefined'){
+  // if the store id is not provided or is undefined then redirect to store page
+   else if(!params.storeId || params.storeId==='undefined'){
     redirect('/store')
   }
- else if(!store && storeLoading){
+  // this is the loading state
+  else if(storeLoading){
     return (
       <div className="flex justify-center items-center h-screen text-xl font-bold">Data is featching......</div>
-    )
-  }
+      )
+    }
+    // if the store is not found and the data is not loading then redirect to store page
   else if(!store && !storeLoading){
     redirect('/')
   }

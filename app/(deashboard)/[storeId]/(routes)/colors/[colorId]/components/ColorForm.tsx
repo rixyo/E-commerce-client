@@ -1,3 +1,4 @@
+// this is the form to create and edit colors
 "use client"
 import React, { useState } from 'react';
 import * as z from 'zod';

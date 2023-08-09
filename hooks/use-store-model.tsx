@@ -1,3 +1,4 @@
+// this is a custom hook to manage the state of the store modal
 import { create } from 'zustand'
 interface  useStoreModalStore {
     isOpen: boolean;

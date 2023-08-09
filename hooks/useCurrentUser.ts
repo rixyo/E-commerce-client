@@ -1,3 +1,4 @@
+// this hook is used to get current user data
 import { redis } from "@/lib/redis";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

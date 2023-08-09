@@ -1,3 +1,4 @@
+// this is parent component for all colors routes
 "use client"
 import React from 'react';
 import {  useRouter } from 'next/navigation';
@@ -19,6 +20,7 @@ type pageProps = {
     }
 };
 const Colors:React.FC<pageProps> = ({params}) => {
+    // fetch all colors based on storeId
     const {data:colors}=useGetAllColors(params.storeId)
     const router = useRouter()
     

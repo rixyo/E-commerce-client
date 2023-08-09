@@ -1,3 +1,4 @@
+// this page is for listing all sizes
 "use client"
 import React from 'react';
 import useGetAllSizes from '@/hooks/useGetAllSizes';
@@ -19,8 +20,10 @@ type pageProps = {
     }
 };
 const Sizes:React.FC<pageProps> = ({params}) => {
+    // this is the hook that gets all the sizes
     const {data:sizes}=useGetAllSizes(params.storeId)
     const router = useRouter()
+    // convert the data to the format that the data table can understand
     const data:SizeColumn[]|undefined=sizes?.map((item)=>({
         id:item.id,
         name:item.name,

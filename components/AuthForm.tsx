@@ -11,10 +11,12 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from './ui/use-toast';
 import {redis} from "@/lib/redis"
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 type Vairant="Login" | "forgotPassword";
 
 const AuthForm:React.FC = () => {
     const [variant, setVariant] = useState<Vairant>("Login")
+    const [passwordType, setPasswordType] = useState<string>("password");
     const router=useRouter()
     const formSchema = z.object({
         email: z.string().email("Must be a valid email"),
@@ -46,6 +48,14 @@ const AuthForm:React.FC = () => {
         })
       })
     }; 
+    const ShowPassword= () => {
+      if (passwordType === "password") {
+          setPasswordType("text");
+      } else {
+          setPasswordType("password");
+      }
+
+  };
     return (
         
     <div className="bg-white p-10 rounded-lg sm:w-auto lg:w-1/3">
@@ -80,7 +90,12 @@ const AuthForm:React.FC = () => {
            <FormItem>
             <FormLabel>Password</FormLabel>
             <FormControl>
-             <Input type="password" placeholder='Password' {...field} />
+            <div className='relative'>
+                    <Input key={field.name} className='relative'  type={passwordType} placeholder="Password" {...field} />
+                   {passwordType==="password" && <EyeIcon className='absolute top-1/2 right-1 -translate-y-1/2  cursor-pointer text-gray-400' onClick={ShowPassword}  size={20}/> } 
+                    {passwordType==="text" && <EyeOffIcon className='absolute top-1/2 right-1 -translate-y-1/2  cursor-pointer text-gray-400' onClick={ShowPassword}  size={20}/>}
+                    </div>
+
             </FormControl>
             <FormMessage>{form.formState.errors?.password?.message}</FormMessage>
 

@@ -1,3 +1,4 @@
+// this hook is used to get the first store of the user
 import { redis } from "@/lib/redis";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

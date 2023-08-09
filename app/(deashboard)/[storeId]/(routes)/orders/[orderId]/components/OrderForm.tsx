@@ -1,3 +1,4 @@
+// this is the form to update the order
 "use client"
 import React, { useState } from 'react';
 import * as z from 'zod';
@@ -7,22 +8,12 @@ import { redis } from '@/lib/redis';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 
-
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel} from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
 import {  useParams, useRouter } from 'next/navigation';
 
 import { Checkbox } from '@/components/ui/checkbox';
+import CustomDatePicker from '@/components/ui/custom-date-picker';
 
 
 type Order= {
@@ -40,8 +31,8 @@ const formSchema=z.object({
 })
 
 
-const ColorForm:React.FC<FormProps> = ({initialData}) => {
-  const [date, setDate] = React.useState<Date>()
+const OrderForm:React.FC<FormProps> = ({initialData}) => {
+  const [date, setDate] = useState<Date | undefined>();
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter();
     const params = useParams();
@@ -116,28 +107,10 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
                 </FormItem>
               )}
             />
-            <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
+           <CustomDatePicker
+            date={date}
+            setDate={setDate as React.Dispatch<React.SetStateAction<Date>>}
+            />
              
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
@@ -148,4 +121,4 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
         </>
     )
 }
-export default ColorForm;
+export default OrderForm;

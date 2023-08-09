@@ -1,3 +1,4 @@
+// Purpose:  Setting page for store
 "use client";
 import useStore from '@/hooks/useStoreById';
 import SettingForm from './components/SettingForm';

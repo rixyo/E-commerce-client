@@ -1,3 +1,4 @@
+// this hook is used to get a color by id
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 

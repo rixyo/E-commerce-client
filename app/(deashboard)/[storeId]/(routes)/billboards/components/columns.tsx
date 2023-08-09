@@ -1,3 +1,5 @@
+// Note: This file is used for the billboard table columns
+
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"

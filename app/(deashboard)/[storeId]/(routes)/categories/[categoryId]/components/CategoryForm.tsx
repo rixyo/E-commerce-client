@@ -1,3 +1,4 @@
+// this is the form for creating and editing categories
 "use client"
 import React, { useState } from 'react';
 import * as z from 'zod';

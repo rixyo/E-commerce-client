@@ -1,3 +1,4 @@
+// parent component for all categories routes
 "use client"
 import React from 'react';
 import { useRouter } from 'next/navigation';
@@ -17,9 +18,10 @@ type pageProps = {
     }
 };
 const Categories:React.FC<pageProps> = ({params}) => {
+    // fetch all categories based on storeId
     const {data:category}=useGetAllCategories(params.storeId)
     const router = useRouter()
-   
+   // format data to be used in data table
     const data:CategoryColumn[]|undefined=category?.map((item)=>({
         id:item.id,
         name:item.name,

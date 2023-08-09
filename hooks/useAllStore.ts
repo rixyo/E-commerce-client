@@ -1,3 +1,4 @@
+// this hook is used to get all store
 import { redis } from "@/lib/redis";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

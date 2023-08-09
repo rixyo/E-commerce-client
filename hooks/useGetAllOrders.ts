@@ -1,3 +1,4 @@
+// this hook is used to get all orders of a store
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { redis } from "@/lib/redis";

@@ -1,3 +1,4 @@
+// this is the products page for the dashboard
 "use client"
 
 import React from 'react';
@@ -22,12 +23,11 @@ type pageProps = {
     }
 };
 const Products:React.FC<pageProps> = ({params}) => {
+  // this is the hook that gets all the products
     const {data:products}=useGetAllProducts(params.storeId)
     const router = useRouter()
-    if(!products){
-        return <div className='flex justify-center items-center h-full text-xl font-bold'>Loading....</div>
-    }
-    const data: ProductColumn[] = products?.map((item) => ({
+  // convert the data to the format that the data table can understand
+    const data: ProductColumn[] | undefined = products?.map((item) => ({
         id: item.id,
         name: item.name,
         isFeatured: item.isFeatured,
@@ -52,7 +52,7 @@ const Products:React.FC<pageProps> = ({params}) => {
         </div>
         <Separator className='my-4'/>
         <div className='border-2 border-gray-500 p-5 rounded-lg'>
-       <DataTable columns={columns} searchKey='name' data={data} />  
+      {data &&  <DataTable columns={columns} searchKey='id' data={data} />   }
         </div>
    
             </div>

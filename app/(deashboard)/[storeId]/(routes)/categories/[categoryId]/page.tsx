@@ -1,3 +1,4 @@
+// this page isfor single category
 "use client";
 import React from 'react';
 import CategoryForm from './components/CategoryForm';
