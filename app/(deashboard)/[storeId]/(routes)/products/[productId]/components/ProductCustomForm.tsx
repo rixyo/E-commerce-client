@@ -82,7 +82,7 @@ const onSubmit = async(value:z.infer<typeof formSchema>) => {
   setLoading(true)
   const token= await redis.get('token')
   if(initialData){
-    await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/update/${initialData.id}`,value,{
+    await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/product/${initialData.id}/update`,value,{
       headers:{
           "Content-Type":"application/json",
           Authorization:`Bearer ${token}`
@@ -94,6 +94,13 @@ const onSubmit = async(value:z.infer<typeof formSchema>) => {
           description:toastMessage
       })
       router.push(`/${params.storeId}/products/${initialData.id}`)
+    }).catch((error)=>{
+      setLoading(false)
+      toast({
+        variant:'destructive',
+        title:'Error',
+        description:'Something went wrong'
+    })
     })
   }else{
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/create`,value,{

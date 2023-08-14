@@ -12,7 +12,7 @@ const useGetAllBillboards = (storeId:string) => {
     const {data,isLoading,isError}=useQuery({
         queryKey:['billboards'],
         queryFn:async()=> {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${storeId}/findall`,{
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${storeId}/all`,{
             })
             
                 return data as Billboard[]   

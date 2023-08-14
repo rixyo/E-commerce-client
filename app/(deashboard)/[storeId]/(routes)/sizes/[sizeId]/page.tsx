@@ -14,13 +14,13 @@ const SizePage = ({params}:{
     }
 }) => {
     const pathname=usePathname();
-    const {data:size,isLoading}=useGetSizeById(params.sizeId)
+    const {data:size}=useGetSizeById(params.sizeId)
     return (
         <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
        {pathname.includes('new') && <SizeForm initialData={undefined} />  }  
      
-       {size &&!isLoading && <SizeForm initialData={size} />}
+       {size && <SizeForm initialData={size} />}
         </div>
       </div>
     )

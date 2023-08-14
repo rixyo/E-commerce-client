@@ -35,7 +35,7 @@ const AuthForm:React.FC = () => {
             title: "Login Success",
             description: "You have been logged in successfully",
         })
-        await redis.set('token',res.data,{
+        await redis.set('token',res.data.access_token,{
             ex:60*60*24*1
         })
        router.push("/store")

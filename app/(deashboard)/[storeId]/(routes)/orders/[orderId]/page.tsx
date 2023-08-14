@@ -4,6 +4,7 @@ import React from 'react';
 
 import OrderForm from './components/OrderForm';
 import useGetOrderById from '@/hooks/useGetOrderById';
+import { format } from 'date-fns';
 
 const OrderPage = ({params}:{
     params:{
@@ -13,10 +14,13 @@ const OrderPage = ({params}:{
 }) => {
   // fetch order by id
     const {data:order}=useGetOrderById(params.orderId)
+    console.log(order)
     // set initial data
     const data= {
         id:order?.id,
         isDelivered:order?.isDelivered,
+        deliveredAt:order?.deliveredAt?format(new Date(order?.deliveredAt), 'yyyy-MM-dd'):undefined,
+      
     }
     return (
         <div className="flex-col">

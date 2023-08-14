@@ -28,7 +28,7 @@ const useGetAllOrders = (storeId: string) => {
         queryKey:["AllOrders"],
         queryFn: async () => {
             const token= await redis.get('token');
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/${storeId}/findall`,{
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/${storeId}/all`,{
                 headers:{
                     Authorization: `Bearer ${token}`,
                 }

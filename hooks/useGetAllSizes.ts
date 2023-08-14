@@ -12,7 +12,7 @@ const useGetAllSizes =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
         queryKey:["AllSizes",storeId],
         queryFn: async () => {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/size/${storeId}/findall`)
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/size/${storeId}/all`)
             return data as Size[];
         }
     });

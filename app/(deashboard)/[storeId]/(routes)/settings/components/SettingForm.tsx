@@ -81,7 +81,7 @@ const SettingForm:React.FC<SettingFormProps> = ({store}) => {
                 title:'Store deleted',
                 description:'Your store has been deleted successfully'
             })
-            router.push('/')
+            router.push('/store')
         }).catch((error)=>{
             setLoading(false)
             console.log(error)

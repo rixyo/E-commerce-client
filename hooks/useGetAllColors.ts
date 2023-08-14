@@ -11,7 +11,7 @@ const useGetAllColors =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
         queryKey:["AllColors"],
         queryFn: async () => {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/color/${storeId}/findall`)
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/color/${storeId}/all`)
             return data as Color[];
         },
     });

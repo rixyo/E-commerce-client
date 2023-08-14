@@ -56,7 +56,7 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/color/${params.storeId}/update/${initialData.id}`,value,{
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/color/${initialData.id}`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -86,14 +86,13 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
              
               
           }).catch((error)=>{
+            setLoading(false)
               console.log(error)
               toast({
                   variant:'destructive',
                   title:'Error',
                   description:'Something went wrong'
               })
-          }).finally(()=>{
-              setLoading(false)
           })
         }
     }
@@ -154,6 +153,7 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
             <FormField
               control={form.control}
               name="name"
+              defaultValue={initialData?.name}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -169,6 +169,7 @@ const ColorForm:React.FC<FormProps> = ({initialData}) => {
                 <FormField
               control={form.control}
               name="value"
+              defaultValue={initialData?.value}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Value</FormLabel>

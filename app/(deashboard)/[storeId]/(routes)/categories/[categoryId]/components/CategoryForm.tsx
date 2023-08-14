@@ -70,7 +70,7 @@ const CategoryForm:React.FC<FormProps> = ({initialData}) => {
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/category/${params.storeId}/update/${initialData.id}`,value,{
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/category/${initialData.id}/update`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`

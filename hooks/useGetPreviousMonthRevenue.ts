@@ -3,12 +3,12 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { redis } from "@/lib/redis";
 
-const useGetCurrentMonthRevenue = (storeId: string) => {
+const useGetPreviousMonthRevenue = (storeId: string) => {
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["currentmonthrevenue", storeId],
+        queryKey: ["previousmonth", storeId],
         queryFn: async () => {
             const token = await redis.get('token')
-            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/revenue/${storeId}/current-month`,{
+            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/revenue/${storeId}/last-month`,{
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -21,4 +21,4 @@ const useGetCurrentMonthRevenue = (storeId: string) => {
         isLoading,
     }
 };
-export default useGetCurrentMonthRevenue;
+export default  useGetPreviousMonthRevenue ;

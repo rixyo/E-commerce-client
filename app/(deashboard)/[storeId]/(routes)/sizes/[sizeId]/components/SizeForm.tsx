@@ -79,7 +79,7 @@ const SizeForm:React.FC<FormProps> = ({initialData}) => {
         setLoading(true)
         const token= await redis.get('token')
         if(initialData){
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/size/${params.storeId}/update/${initialData.id}`,value,{
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/size/${initialData.id}/update`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
@@ -109,6 +109,7 @@ const SizeForm:React.FC<FormProps> = ({initialData}) => {
              
               
           }).catch((error)=>{
+              setLoading(false)
               console.log(error)
               toast({
                   variant:'destructive',
@@ -177,6 +178,7 @@ const SizeForm:React.FC<FormProps> = ({initialData}) => {
             <FormField
               control={form.control}
               name="name"
+              defaultValue={initialData?.name}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -190,6 +192,7 @@ const SizeForm:React.FC<FormProps> = ({initialData}) => {
                 <FormField
               control={form.control}
               name="value"
+              defaultValue={initialData?.value}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Value</FormLabel>

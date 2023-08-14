@@ -27,7 +27,7 @@ const useGetAllProducts =  (storeId:string) => {
     const {data,isLoading,isError} = useQuery({
         queryKey:["AllProducts"],
         queryFn: async () => {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${storeId}/findall`)
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${storeId}/all`)
             return data as Product[];
         }
     });

@@ -19,6 +19,8 @@ import CustomDatePicker from '@/components/ui/custom-date-picker';
 type Order= {
     id:string;
     isDelivered:boolean;
+    deliveredAt:any
+ 
    
 }
 type FormProps = {
@@ -87,6 +89,7 @@ const OrderForm:React.FC<FormProps> = ({initialData}) => {
           <FormField
               control={form.control}
               name="isDelivared"
+              defaultValue={initialData?.isDelivered}
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
@@ -111,7 +114,10 @@ const OrderForm:React.FC<FormProps> = ({initialData}) => {
             date={date}
             setDate={setDate as React.Dispatch<React.SetStateAction<Date>>}
             />
-             
+             <div>
+              <FormLabel className='text-lg font-bold'>This product was delevered at: </FormLabel>
+             <input value={initialData?.deliveredAt} />
+             </div>
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

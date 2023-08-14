@@ -18,7 +18,7 @@ const useGetAllCategories =  (storeId:string) => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["AllCategories"],
         queryFn: async () => {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/${storeId}/findall`)
+            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/${storeId}/all`)
             return data as Category[];
         },
     });
