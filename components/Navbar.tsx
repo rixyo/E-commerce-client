@@ -7,6 +7,7 @@ import StoreSwitcher from '@/components/store-switcher';
 import useAllStore from '@/hooks/useAllStore';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import UserMenubar from './ui/user-menubar';
+import { ThemeChange } from './ui/theme-change';
 
 const Navbar:React.FC= () => {
     const {data} = useAllStore();
@@ -20,7 +21,10 @@ const Navbar:React.FC= () => {
            <div className='flex  h-16 items-center px-4 gap-20'>
        {data && <StoreSwitcher items={data} /> }  
         <MainNav className='mx-6'/>
-           <div className='ml-auto flex items-center space-x-4'>
+        <div className='flex-1'>
+            <ThemeChange />
+        </div>
+           <div className='flex-1'>
         <UserMenubar />
            </div>
            </div>

@@ -1,18 +1,24 @@
 "use client";
 
+import React, { useState } from 'react';
+import useGetRevenueByDate from '@/hooks/useGetRevenueByDate';
+import useGetCurrentMonthRevenue from '@/hooks/useGetCurrentMonthRevenue';
+import useGetPreviousMonthRevenue from '@/hooks/useGetPreviousMonthRevenue';
+import useGraphRevenue from '@/hooks/useGraphRevenue';
+import useGetStoreRevenue from '@/hooks/useGetStoreRevenue';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CustomDatePicker from '@/components/ui/custom-date-picker';
 import { Heading } from '@/components/ui/heading';
 import {Plus, Minus} from 'lucide-react'
 import { Separator } from '@/components/ui/separator';
-import useGetStoreRevenue from '@/hooks/useGetStoreRevenue';
 import {  formatter } from '@/lib/utils';
 
-import React, { useState } from 'react';
-import useGetRevenueByDate from '@/hooks/useGetRevenueByDate';
-import useGetCurrentMonthRevenue from '@/hooks/useGetCurrentMonthRevenue';
-import useGetPreviousMonthRevenue from '@/hooks/useGetPreviousMonthRevenue';
-import LineChartOverview from '@/components/LineChartOverview';
+
+import { Overview } from '@/components/Overview';
+import PieOverview from '@/components/Pie';
+import useSaleReport from '@/hooks/useGetSale';
+import SalesOverview from '@/components/SalesOverview';
 type pageProps = {
     params:{
         storeId:string
@@ -21,11 +27,13 @@ type pageProps = {
 };
 
 const DeshboardPage:React.FC<pageProps> = ({params}) => {
-    const {data,isLoading}=useGetStoreRevenue(params.storeId)
+    const {data}=useGetStoreRevenue(params.storeId)
     const [date, setDate] = useState<Date | undefined>();
     const {data:todaysRevenue}=useGetRevenueByDate(params.storeId,date as Date)
     const {data:currentMonthRevenue}=useGetCurrentMonthRevenue(params.storeId)
     const {data:previousMonthRevenue}=useGetPreviousMonthRevenue(params.storeId)
+    const {data:graphRevenue}=useGraphRevenue(params.storeId)
+    const {data:sales}=useSaleReport(params.storeId)
   
    const calculateRevenueChangePercentage = (currentMonthRevenue:number, previousMonthRevenue:number) => {
         if (previousMonthRevenue === 0) {
@@ -37,24 +45,51 @@ const DeshboardPage:React.FC<pageProps> = ({params}) => {
         return percentageChange;
       }
       const revenueChangePercentage = calculateRevenueChangePercentage(currentMonthRevenue as number, previousMonthRevenue as number);
-    const grapData = [{
-        name: 'Current Month',
-        current: currentMonthRevenue,
-        prev:previousMonthRevenue
-
+    const pieData = [{
+        name: 'Previous Month',
+        value:previousMonthRevenue
+        
     },
     {
-        name: 'Previous Month',
-        current: currentMonthRevenue,
-        prev:previousMonthRevenue
+        name: 'Current Month',
+        value: currentMonthRevenue,
     },
+]
+const lineData = [
+    {
+        name: 'Total Sales',
+        fill: '#800080',
+        value:sales?.total_sale
+    },
+    {
+        name: 'Yearly Sales',
+        fill: '#83a6ed',
+        value:sales?.total_sale_thisYear
+    },
+    {
+        name: 'Monthly Sales',
+        fill: '#8dd1e1',
+        value:sales?.total_sale_thisMonth
+    },
+    {
+        name: 'Weekly Sales',
+        fill: '#82ca9d',
+        value:sales?.total_sale_thisWeek
+    },
+    {
+        name: 'Today Sales',
+        fill: '#a4de6c',
+        value:sales?.total_sale_today
+
+    }
+ 
 ]
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'>
             <Heading 
             title='Deshboard'
-            description='Welcome to your store deshboard.'
+            description='Welcome to store deshboard.'
             />  
             <Separator />
             
@@ -89,13 +124,14 @@ const DeshboardPage:React.FC<pageProps> = ({params}) => {
                               
                         </div>
                             )}
+                              <PieOverview data={pieData} />
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className=' space-y-0 pb-2'>
                         <CardTitle className='text-sm font-medium'>
                         <h2>
-  Revenue {date ? `on ${date.toLocaleDateString()}` : 'Overview'}
+  Revenue {date ? `on ${date.toLocaleDateString()}` : 'Overview Based on Date'}
     </h2>
                         </CardTitle>
                         <CardDescription>
@@ -111,13 +147,26 @@ const DeshboardPage:React.FC<pageProps> = ({params}) => {
                         </div>
                     </CardContent>
                 </Card>
+                <Card>
+                    <CardHeader className=' space-y-0 pb-2'>
+                        <CardTitle className='text-sm font-medium'>
+                            Sales Overview
+                        </CardTitle>
+                    </CardHeader>
+                  <SalesOverview data={lineData} />
+                </Card>
+                <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <Overview data={graphRevenue} />
+          </CardContent>
+        </Card>
 
             </div>
             </div>
-            <Separator />
-            <div className='flex items-center justify-center'>
-            <LineChartOverview data={grapData} />
-            </div>
+            
         </div>
     )
 }

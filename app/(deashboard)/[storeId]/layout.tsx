@@ -1,6 +1,7 @@
 // Note: This is a layout for dashboard
 "use client"
 import Navbar from "@/components/Navbar"
+import { Loader } from "@/components/ui/loadert"
 import useCurrentUser from "@/hooks/useCurrentUser"
 import useStore from "@/hooks/useStoreById"
 import { redirect } from "next/navigation"
@@ -28,7 +29,7 @@ export default  function DashBoardLayout({
   // this is the loading state
   else if(storeLoading){
     return (
-      <div className="flex justify-center items-center h-screen text-xl font-bold">Data is featching......</div>
+      <Loader/>
       )
     }
     // if the store is not found and the data is not loading then redirect to store page

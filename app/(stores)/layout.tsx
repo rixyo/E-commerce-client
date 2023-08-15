@@ -1,5 +1,6 @@
 // layout for store page
 "use client"
+import { Loader } from "@/components/ui/loadert";
 import { useStoreModal } from "@/hooks/use-store-model";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useFirstStore from "@/hooks/useFirstStore";
@@ -15,7 +16,7 @@ export default  function SetupLayout({
     const {data:user,isLoading}=useCurrentUser()
     const onOpen = useStoreModal(state=>state.onOpen);
     if(storeLoading) return (
-        <div className="flex justify-center items-center h-full text-xl">Do You Know A fox cann`&lsquo;`t lough</div>
+       <Loader/>
     )
     else if(!store && !storeLoading){
         onOpen()

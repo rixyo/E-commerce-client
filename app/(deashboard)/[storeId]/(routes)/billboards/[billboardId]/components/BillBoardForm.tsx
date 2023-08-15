@@ -55,7 +55,7 @@ const BillBoardForm:React.FC<FormProps> = ({initialData}) => {
         const token= await redis.get('token')
         if(initialData){
           if(value.imageUrl===initialData.imageUrl && value.label===initialData.label) return;
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/billboard/${params.storeId}/update/${initialData.id}`,value,{
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/billboard//${initialData.id}/update`,value,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${token}`
