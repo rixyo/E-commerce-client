@@ -85,7 +85,7 @@ const lineData = [
  
 ]
     return (
-        <div className='flex-col'>
+        <div>
             <div className='flex-1 space-y-4 p-8 pt-6'>
             <Heading 
             title='Deshboard'
@@ -93,7 +93,9 @@ const lineData = [
             />  
             <Separator />
             
-            <div className='grid gap-4 grid-cols-3'>
+            <div className='grid  grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='w-full'>
+
                 <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                         <CardTitle className='text-sm font-medium'>
@@ -104,7 +106,7 @@ const lineData = [
                         <div className='text-2xl font-semibold'>
                             {formatter.format(data)}
                         </div>
-                            {revenueChangePercentage > 0 && (
+                            {revenueChangePercentage > 0 ? (
                         <div className='flex items-center gap-3 text-green-500'>
                                   <Plus className='' size={16} />
                                 <span className='text-sm'>
@@ -113,26 +115,28 @@ const lineData = [
                                 </span>
                               
                         </div>
-                            )}
-                                {revenueChangePercentage < 0 && (
-                        <div className='flex items-center gap-3 text-red-500'>
-                                  <Minus className='' size={16} />
-                                <span className='text-sm'>
-                                   {revenueChangePercentage.toFixed(2)}%
-                                from last month
-                                </span>
-                              
-                        </div>
-                            )}
+                            ):
+                            (
+                                <div className='flex items-center gap-3 text-red-500'>
+                                          <Minus className='' size={16} />
+                                        <span className='text-sm'>
+                                           {revenueChangePercentage.toFixed(2)}%
+                                        from last month
+                                        </span>
+                                      
+                                </div>
+                                    )}
                               <PieOverview data={pieData} />
                     </CardContent>
                 </Card>
+                </div>
+            
                 <Card>
                     <CardHeader className=' space-y-0 pb-2'>
                         <CardTitle className='text-sm font-medium'>
-                        <h2>
+                       
   Revenue {date ? `on ${date.toLocaleDateString()}` : 'Overview Based on Date'}
-    </h2>
+    
                         </CardTitle>
                         <CardDescription>
                         <CustomDatePicker 
@@ -153,8 +157,12 @@ const lineData = [
                             Sales Overview
                         </CardTitle>
                     </CardHeader>
+                  
+
                   <SalesOverview data={lineData} />
+                   
                 </Card>
+              
                 <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>

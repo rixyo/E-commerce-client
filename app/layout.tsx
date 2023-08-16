@@ -3,27 +3,26 @@
 import './globals.css'
 import { Toaster } from "@/components/ui/toaster"
 import ModalProvider from '@/providers/modal-provider'
+import { ReactQueryProvider } from '@/providers/react-query-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
-export default function AuthLayout({
+
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const queryClient = new QueryClient()
+
   return (
   
     <html lang="en">
-      
       <body>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ReactQueryProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <ModalProvider/>
         {children}
         <Toaster/>
-
-        </ThemeProvider>
-        </QueryClientProvider>
+      </ThemeProvider>
+    </ReactQueryProvider>
         </body>
     </html>
 
