@@ -27,11 +27,7 @@ const SalesOverview:React.FC<LineChartOverviewProps> = ({data}) => {
     data={data}
     isAnimationActive
   >
-   
-    <LabelList position="inside" fill="#fff" stroke="none" dataKey="name"  />
-    <LabelList position="left" fill="#fff" stroke="none" dataKey="value"  />
-   
-
+    <LabelList position="inside" fill="#fff" stroke="none"  dataKey="name"  />
   </Funnel>
 </FunnelChart>
 </ResponsiveContainer>

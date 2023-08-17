@@ -35,7 +35,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     setLoading(true)
     const token= await redis.get('token')
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/product/${data?.id}`,{
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/${data?.id}`,{
         headers:{
             "Content-Type":"application/json",
             Authorization:`Bearer ${token}`

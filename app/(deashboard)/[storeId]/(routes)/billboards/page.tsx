@@ -32,7 +32,7 @@ const BillBoards:React.FC<pageProps> = ({params}) => {
           }
     })
     return (
-        <div className='flex-col'>
+        <div className='flex-col mt-16'>
             <div className='flex-1 space-y-4 p-8 pt-6'>
             <div className='flex justify-between items-center'>
       <Heading

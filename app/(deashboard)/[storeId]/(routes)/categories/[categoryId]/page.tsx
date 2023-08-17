@@ -17,7 +17,7 @@ const CategoryPage = ({params}:{
     const pathname=usePathname();
     const {data:category}=useGetCategoryById(params.categoryId)
     return (
-        <div className="flex-col">
+        <div className="flex-col mt-16">
         <div className="flex-1 space-y-4 p-8 pt-6">
        {pathname.includes('new') && <CategoryForm initialData={undefined} />  }  
        {category  && <CategoryForm initialData={category} />}

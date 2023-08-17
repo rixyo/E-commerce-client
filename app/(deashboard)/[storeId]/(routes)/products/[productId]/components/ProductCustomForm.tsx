@@ -82,7 +82,7 @@ const onSubmit = async(value:z.infer<typeof formSchema>) => {
   setLoading(true)
   const token= await redis.get('token')
   if(initialData){
-    await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/product/${initialData.id}/update`,value,{
+    await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/${initialData.id}/update`,value,{
       headers:{
           "Content-Type":"application/json",
           Authorization:`Bearer ${token}`
@@ -133,7 +133,7 @@ const onSubmit = async(value:z.infer<typeof formSchema>) => {
 const onDelete=async()=>{
   setLoading(true)
   const token= await redis.get('token')
-  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/product/${initialData?.id}`,{
+  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/product/${params.storeId}/${initialData?.id}`,{
       headers:{
           "Content-Type":"application/json",
           Authorization:`Bearer ${token}`

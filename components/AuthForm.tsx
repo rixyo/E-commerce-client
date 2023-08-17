@@ -16,6 +16,7 @@ type Vairant="Login" | "forgotPassword";
 
 const AuthForm:React.FC = () => {
     const [variant, setVariant] = useState<Vairant>("Login")
+    const [loading, setLoading] = useState<boolean>(false)
     const [passwordType, setPasswordType] = useState<string>("password");
     const router=useRouter()
     const formSchema = z.object({
@@ -30,7 +31,9 @@ const AuthForm:React.FC = () => {
         },
     })
     const onSubmit = async (value: z.infer<typeof formSchema>) => {
+      setLoading(true)
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`,value).then(async(res)=>{
+        setLoading(false)
         toast({
             title: "Login Success",
             description: "You have been logged in successfully",
@@ -40,6 +43,7 @@ const AuthForm:React.FC = () => {
         })
        router.push("/store")
       }).catch((error)=>{
+        setLoading(false)
         console.log(error)
         toast({
             variant:"destructive",
@@ -76,7 +80,7 @@ const AuthForm:React.FC = () => {
               <FormItem>
                <FormLabel>Email</FormLabel>
                <FormControl>
-                <Input type="email" placeholder='Email' {...field} />
+                <Input type="email" disabled={loading} placeholder='Email' {...field} />
                </FormControl>
                <FormMessage>{form.formState.errors?.email?.message}</FormMessage>
 
@@ -91,7 +95,7 @@ const AuthForm:React.FC = () => {
             <FormLabel>Password</FormLabel>
             <FormControl>
             <div className='relative'>
-                    <Input key={field.name} className='relative'  type={passwordType} placeholder="Password" {...field} />
+                    <Input key={field.name} className='relative' disabled={loading}  type={passwordType} placeholder="Password" {...field} />
                    {passwordType==="password" && <EyeIcon className='absolute top-1/2 right-1 -translate-y-1/2  cursor-pointer text-gray-400' onClick={ShowPassword}  size={20}/> } 
                     {passwordType==="text" && <EyeOffIcon className='absolute top-1/2 right-1 -translate-y-1/2  cursor-pointer text-gray-400' onClick={ShowPassword}  size={20}/>}
                     </div>
@@ -103,8 +107,8 @@ const AuthForm:React.FC = () => {
          )}
          />
             <div className='flex items-center justify-end pt-6 space-x-2'>
-                <Button type='submit'>
-                    Continue
+                <Button type='submit' disabled={loading}>
+                   {loading?"Loading...":"Login"}
                 </Button>
                
             </div>

@@ -94,7 +94,7 @@ const lineData = [
             <Separator />
             
             <div className='grid  grid-cols-1 md:grid-cols-3 gap-4'>
-                <div className='w-full'>
+                <div className='col-span-1'>
 
                 <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -130,7 +130,8 @@ const lineData = [
                     </CardContent>
                 </Card>
                 </div>
-            
+                <div className='col-span-1'>
+
                 <Card>
                     <CardHeader className=' space-y-0 pb-2'>
                         <CardTitle className='text-sm font-medium'>
@@ -151,6 +152,9 @@ const lineData = [
                         </div>
                     </CardContent>
                 </Card>
+                </div>
+            <div className='col-span-1'>
+
                 <Card>
                     <CardHeader className=' space-y-0 pb-2'>
                         <CardTitle className='text-sm font-medium'>
@@ -162,7 +166,10 @@ const lineData = [
                   <SalesOverview data={lineData} />
                    
                 </Card>
+            </div>
               
+
+            </div>
                 <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
@@ -171,8 +178,6 @@ const lineData = [
             <Overview data={graphRevenue} />
           </CardContent>
         </Card>
-
-            </div>
             </div>
             
         </div>
