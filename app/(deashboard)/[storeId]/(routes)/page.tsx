@@ -1,5 +1,5 @@
 "use client";
-
+export const revalidate = 0;
 import React, { useState } from 'react';
 import useGetRevenueByDate from '@/hooks/useGetRevenueByDate';
 import useGetCurrentMonthRevenue from '@/hooks/useGetCurrentMonthRevenue';

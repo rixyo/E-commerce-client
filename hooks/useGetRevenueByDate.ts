@@ -9,7 +9,7 @@ const useGetRevenueByDate = (storeId: string, date:Date) => {
     const dateObject = new Date(date);
    
 const { data, isLoading, isError } = useQuery({
-    queryKey: ["todaysrevenue", storeId, dateObject],
+    queryKey: ["todaysrevenue",dateObject],
     queryFn: async () => {
         const token = await redis.get('token')
         const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/revenue/${storeId}/${dateObject}`,{
