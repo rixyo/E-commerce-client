@@ -15,6 +15,12 @@ export default function RootLayout({
   return (
   
     <html lang="en">
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="description" content="A E-commerce Application CMS for Admin" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>E-commerce-CMS</title>
+    </head>
       <body>
       <ReactQueryProvider>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
